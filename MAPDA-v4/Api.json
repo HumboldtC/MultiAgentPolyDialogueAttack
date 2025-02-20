@@ -1,0 +1,24 @@
+{
+    "api": [
+        {
+            "name": "Intergrated",
+            "url": "https://cn2us02.opapi.win/v1/chat/completions",
+            "key": "sk-bQuAVbHK3f7061FF32FdT3BlBkFJA59209a2Dc534501BB6F"
+        },
+        {
+            "name": "Moderation",
+            "url": "https://cn2us02.opapi.win/v1/moderations",
+            "key": "sk-bQuAVbHK3f7061FF32FdT3BlBkFJA59209a2Dc534501BB6F"
+        },
+        {
+            "name": "Qwen",
+            "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+            "key": "sk-832d7043f7e24d29855a0ae06f547762"
+        },
+        {
+            "name": "api3",
+            "url": "https://api3.example.com",
+            "key": "your_api3_key"
+        }
+    ]
+}
