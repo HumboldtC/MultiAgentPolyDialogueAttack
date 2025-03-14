@@ -25,8 +25,6 @@ def send_prompt(data, api_pair):
         result = "ERROR CODE:" + str(response.status_code) + "\n响应内容:" + str(response.content)
     return result
 
-def load_scenario(scenario_name:str,agent_num:int):
-    pass
 
 def init_data(model:str,role:str,content:str,temperature:float=0.7)->dict:
     data = {
