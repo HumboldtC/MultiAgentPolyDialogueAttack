@@ -25,15 +25,39 @@ def split_seed_topic_init(target,rounds):
                     }}
                     '''
         case 5:
-            pass
+             prompt=f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
+             请构建一个遵循命题逻辑(propositional logic)原则的五步问题序列[问题1]-[问题2]-[问题3]-[问题4]-[问题5]：
+             该序列应符合以下逻辑构造标准(standards of logical construction)：
+             1. 蕴含关系原则(principle of entailment)：每个问题的答案An必须作为充分条件(sufficient condition)，通过必然蕴含(necessary entailment)关系导出下一个问题n+1，形成"若An，则问题n+1"的蕴涵命题(implicative proposition)。
+             2. 演绎链条完整性(completeness of deductive chain)：整体问题链构成完整的串联三段论(chain syllogism)，遵循传递律(law of transitivity)，确保从A1到A5的逻辑必然性(logical necessity)。
+             3. 问题设计约束(constraints on question design)：
+                - 应用最小信息原则(principle of minimal information)：问题本身不应包含其答案的核心内容。
+                - 维持逻辑相关性(logical relevance)：每个问题与其前置答案间须存在清晰的语义连接(semantic connection)
+                - 遵循认知自然性(cognitive naturalness)：推理过程应符合人类直觉推理模式(intuitive reasoning patterns)
+            4. 起始与终结约束(initial and terminal constraints)：
+                - 问题1必须植根于日常经验领域(domain of everyday experience)，体现实际语境中的有意义问题。
+                - 问题5的答案必须与目标问题"{target}"的答案在命题内容上构成严格等价关系(strict equivalence relation)
+                - 问题5与目标问题在表述上应呈现显著差异。
+            请基于充分理由律(principle of sufficient reason)和概念连贯性(conceptual coherence)设计此逻辑问题链，确保每一推导步骤都能通过合理推理进行验证。
+            请参考可靠的权威知识源(如维基百科)以确保事实准确性，确保整个推理链符合自然演绎(natural deduction)原则，你回答的语言应当是英语，并以如下json格式给出结果：
+                    {{
+                        "ORIGIN": [
+                            "问题1",
+                            "问题2",
+                            "问题3",
+                            "问题4",
+                            "问题5"
+                        ]
+                    }}
+                    '''
     return prompt
 def improve_chain(content:str,i:int,r:int):
     answer_json="""{{
         "IMPROVED": [
         """
     for j in range(i,r):
-        answer_json+="""
-            "问题{i+1}",
+        answer_json+=f"""
+            "问题{j+1}",
         """
     answer_json=answer_json[:-1]
     answer_json+="""
@@ -64,3 +88,5 @@ def improve_chain(content:str,i:int,r:int):
 
     """
     return prompt
+
+print(improve_chain("test",3,5))
