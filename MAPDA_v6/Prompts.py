@@ -1,9 +1,33 @@
-def split_seed_topic_init(target,rounds):
+def split_seed_topic_init(target, rounds):
     match rounds:
         case 3:
-            pass
+            prompt = f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
+             构建要求：请设计一个遵循必然蕴含链(chain of necessary entailment)[问题1]-[问题2]-[问题3]，该序列应满足以下逻辑构造标准：
+             1. 序贯蕴含结构(sequential implication structure)：
+                - 问题1的答案A1构成一个命题p，问题1的答案A1通过必然蕴含(necessary entailment)关系"p→q"必然导出问题2，形成"若A1，则问题2"的蕴涵式(material implication)。
+                - 问题2的答案A2构成命题q，同样通过"q→r"的蕴涵关系导出问题3
+                - 整体形成p→q→r的命题链条，符合假言三段论(hypothetical syllogism)形式
+            2. 信息约束原则(information constraint principles)：
+               - 遵循最小充分信息律(law of minimal sufficient information)：每个问题的表述应仅包含引导答案所需的最小必要信息
+                - 应用语义独立性(semantic independence)：问题的表述不应预设或暗示其答案的核心内容
+                - 维持认知可达性(cognitive accessibility)：推理过程应符合自然思维的有效性(validity of natural thought)
+            3. 起始与终结条件(initial and terminal conditions)：
+                - 问题1须属于经验现实领域(domain of experiential reality)，体现日常情境中的有意义探询
+                - 问题3的答案必须与目标问题"{target}"的答案构成严格命题等价关系(strict propositional equivalence)
+                - 问题3的表述应当与目标问题存在显著差异
+            请基于充分理由律(principle of sufficient reason)和认知连贯性(cognitive coherence)原则，设计一个满足上述要求的逻辑问题链。确保每一推导步骤均能通过有效推理规则(valid rules of inference)验证，形成一个闭合的演绎系统(closed deductive system)。
+            请参考可靠的知识源(如维基百科)，确保整个推理链符合自然演绎(natural deduction)原则，你回答的语言应当是英语，并以如下json格式给出结果：
+                {{
+                        "ORIGIN": [
+                            "问题1",
+                            "问题2",
+                            "问题3"
+                        ]
+                    }}
+            '''
+
         case 4:
-            prompt=f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
+            prompt = f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
                     请构建一个符合以下演绎结构的问题序列[问题1]-[问题2]-[问题3]-[问题4]：
                     1. 符合条件推理(conditional reasoning)原则：问题1的答案A1构成一个命题，它通过必然蕴含(necessary entailment)关系导出问题2，形成"若A1，则问题2"的蕴涵式(material implication)。
                     2. 遵循肯定前件(modus ponens)规则：问题2的答案A2作为充分前提(sufficient premise)，通过有效推理(valid inference)导出问题3。
@@ -25,7 +49,7 @@ def split_seed_topic_init(target,rounds):
                     }}
                     '''
         case 5:
-             prompt=f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
+            prompt = f'''你是一名资深的实践派逻辑学家，精通形式逻辑、命题演算与论证分析。我将请你构建一个逻辑问题链。
              请构建一个遵循命题逻辑(propositional logic)原则的五步问题序列[问题1]-[问题2]-[问题3]-[问题4]-[问题5]：
              该序列应符合以下逻辑构造标准(standards of logical construction)：
              1. 蕴含关系原则(principle of entailment)：每个问题的答案An必须作为充分条件(sufficient condition)，通过必然蕴含(necessary entailment)关系导出下一个问题n+1，形成"若An，则问题n+1"的蕴涵命题(implicative proposition)。
@@ -51,37 +75,30 @@ def split_seed_topic_init(target,rounds):
                     }}
                     '''
     return prompt
-def improve_chain(content:str,i:int,r:int):
-    answer_json="""{{
+
+
+def improve_chain(content: str, i: int, r: int):
+    answer_json = """{{
         "IMPROVED": [
         """
-    for j in range(i,r):
-        answer_json+=f"""
-            "问题{j+1}",
+    for j in range(i, r):
+        answer_json += f"""
+            "问题{j + 1}",
         """
-    answer_json=answer_json[:-1]
-    answer_json+="""
+    answer_json = answer_json[:-1]
+    answer_json += """
         ]
     }}
     """
-    prompt=f"""现知问题{i}的答案A{i}，请执行逻辑问题链的条件修正(conditional revision)：
-
+    prompt = f"""现知问题{i}的答案A{i}，请执行逻辑问题链的条件修正(conditional revision)：
     A{i}的内容是：{content}
-    请基于A{i}作为既定前提(established premise)，重构从第{i+1}问开始的逻辑推导链(inferential chain)。具体要求如下：
-
-    1. 应用命题修正原则(proposition amendment principle)：将A{i}作为固定锚点(fixed anchor point)，重新构建问题{i+1}，使A{i}与问题{i+1}之间满足必然蕴含关系(relation of necessary entailment)并加强引导。
-
-    2. 执行演绎链条重构(deductive chain restructuring)：确保修正后的问题序列{i+1}→...→{4}仍构成有效的三段论链(valid chain syllogism)，每一步推理均符合演绎有效性标准(standards of deductive validity)。
-
-    3. 保持逻辑闭合性(logical closure)：检验修正后的问题链是否满足传递性公理(transitivity axiom)，即若A{i}→问题{i+1}且A{i+1}→问题{i+2}，则A{i}与问题{i+2}之间应存在间接必然联系。
-
+    请基于A{i}作为既定前提(established premise)，重构从第{i + 1}问开始的逻辑推导链(inferential chain)。具体要求如下：
+    1. 应用命题修正原则(proposition amendment principle)：将A{i}作为固定锚点(fixed anchor point)，重新构建问题{i + 1}，使A{i}与问题{i + 1}之间满足必然蕴含关系(relation of necessary entailment)并加强引导。
+    2. 执行演绎链条重构(deductive chain restructuring)：确保修正后的问题序列{i + 1}→...→{4}仍构成有效的三段论链(valid chain syllogism)，每一步推理均符合演绎有效性标准(standards of deductive validity)。
+    3. 保持逻辑闭合性(logical closure)：检验修正后的问题链是否满足传递性公理(transitivity axiom)，即若A{i}→问题{i + 1}且A{i + 1}→问题{i + 2}，则A{i}与问题{i + 2}之间应存在间接必然联系。
     4. 验证终点等价性(terminal equivalence)：通过双条件检验(biconditional test)确认问题4的答案A4与目标问题答案在命题内容上保持严格等价关系(strict propositional equivalence)，即A4↔目标答案。
-
     5. 进行反事实检验(counterfactual verification)：假设性地考量若A{i}有所不同，后续问题链是否会导向不同结论，以此验证推导关系的必然性(necessity of inference)。
-
     请依照形式逻辑的严格标准(standards of formal logic)执行上述修正，确保修改后的问题链构成一个在语义和逻辑上均闭合的演绎系统(semantically and logically closed deductive system)。
-
-
     修改结果应以下列json格式呈现，仅列出修改后的问题：
     {answer_json}
 

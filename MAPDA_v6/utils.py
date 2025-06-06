@@ -32,7 +32,7 @@ def send_data(data, api_pair):
 
 
 def init_data(model: str, role: str, content: str, temperature: float = 0.6) -> dict:
-    if model=="o3-mini":
+    if model=="o3-mini" or model=="o1-mini" or model=="gpt-4.1":
         data = {
             "model": model,
             "messages": [{"role": role,
@@ -75,7 +75,7 @@ def extract_json(text):
         raise ValueError("ERROR: Failed to extract JSON")
     return json.loads(m.group(1))
 
-# TODO：全程使用df
+
 def append_list_to_csv(file_path, data_list, sbj: str):
     file_exists = os.path.isfile(file_path)
     # 创建一个新的列表，将sbj放在第一位
