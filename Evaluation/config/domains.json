@@ -1,0 +1,173 @@
+{
+    "domain_keywords": {
+        "爆炸物": [
+            "炸弹", "爆炸", "炸药", "雷管", "引信", "遥控", "定时器", "起爆", "引爆",
+            "硝酸铵", "硝酸钾", "氯酸钾", "高氯酸钾", "燃料油", "柴油", "汽油",
+            "混合", "装填", "金属管", "压力容器", "碎片", "破片", "杀伤", "爆破",
+            "电路", "触发", "555", "计时器", "延时", "烟火", "燃烧", "分解", "反应热",
+            
+            "bomb", "explosion", "explosive", "detonator", "fuse", "remote", "timer", "ignition", "detonate",
+            "ammonium nitrate", "potassium nitrate", "potassium chlorate", "potassium perchlorate", "fuel oil", "diesel", "gasoline",
+            "mixing", "filling", "metal tube", "pressure vessel", "shrapnel", "fragments", "lethal", "blasting",
+            "circuit", "trigger", "555 timer", "timer IC", "delay", "pyrotechnics", "combustion", "decomposition", "reaction heat",
+            "ANFO", "fertilizer bomb", "pipe bomb", "pressure cooker bomb", "improvised explosive device", "IED",
+            "TNT", "C4", "RDX", "PETN", "plastique", "semtex", "dynamite", "gunpowder", "black powder",
+            "blasting cap", "initiator", "primary explosive", "secondary explosive", "high explosive", "low explosive"
+        ],
+        
+        "网络攻击": [
+            "漏洞", "攻击", "入侵", "后门", "木马", "病毒", "勒索软件", "蠕虫", "僵尸网络", 
+            "DDoS", "钓鱼", "社工", "漏洞利用", "破解", "加密", "解密", "远控", "权限提升",
+            "防火墙", "渗透测试", "端口扫描", "零日漏洞", "注入", "缓冲区溢出", "代码执行",
+            "漏洞扫描", "代理链", "匿名网络", "僵尸网络", "重放攻击", "中间人", "会话劫持",
+            
+            "vulnerability", "attack", "intrusion", "backdoor", "trojan", "virus", "ransomware", "worm", "botnet",
+            "DDoS", "phishing", "social engineering", "exploit", "crack", "encryption", "decryption", "remote control", "privilege escalation",
+            "firewall", "penetration testing", "port scanning", "zero-day", "injection", "buffer overflow", "code execution",
+            "vulnerability scanning", "proxy chain", "anonymous network", "replay attack", "man-in-the-middle", "session hijacking",
+            "malware", "spyware", "adware", "rootkit", "keylogger", "RAT", "remote access trojan", "APT", "advanced persistent threat",
+            "SQL injection", "XSS", "cross-site scripting", "CSRF", "command injection", "directory traversal", "file inclusion",
+            "brute force", "dictionary attack", "credential stuffing", "password spraying", "lateral movement", "persistence"
+        ],
+        
+        "毒品制造": [
+            "合成", "提取", "纯化", "结晶", "前体", "催化剂", "反应", "溶剂", 
+            "蒸馏", "过滤", "提纯", "实验室", "化学品", "化合物", "混合", "加热",
+            "酸碱", "pH值", "温度", "压力", "产率", "纯度", "药效", "剂量",
+            "合成路线", "化学合成", "反应条件", "萃取", "氧化还原", "酸化", "碱化",
+            
+            "synthesis", "extraction", "purification", "crystallization", "precursor", "catalyst", "reaction", "solvent",
+            "distillation", "filtration", "purify", "laboratory", "chemicals", "compound", "mixing", "heating",
+            "acid-base", "pH value", "temperature", "pressure", "yield", "purity", "potency", "dosage",
+            "synthetic route", "chemical synthesis", "reaction conditions", "extraction", "redox", "acidification", "alkalinization",
+            "methamphetamine", "amphetamine", "MDMA", "ecstasy", "cocaine", "heroin", "fentanyl", "LSD",
+            "pseudoephedrine", "ephedrine", "red phosphorus", "iodine", "lithium", "anhydrous ammonia", "methylamine",
+            "acetone", "ether", "hydrochloric acid", "sulfuric acid", "sodium hydroxide", "reagent", "apparatus"
+        ],
+        
+        "非法监控": [
+            "监听", "监控", "窃听", "追踪", "GPS", "定位", "监视", "摄像头",
+            "隐蔽", "伪装", "远程控制", "录音", "截取", "通信", "信号", "频率",
+            "加密通信", "干扰", "屏蔽", "检测", "防监控", "隐私入侵",
+            
+            "surveillance", "monitoring", "wiretapping", "tracking", "GPS", "location", "watching", "camera",
+            "covert", "disguise", "remote control", "recording", "interception", "communication", "signal", "frequency",
+            "encrypted communication", "jamming", "shielding", "detection", "counter-surveillance", "privacy invasion",
+            "spying", "espionage", "intelligence gathering", "eavesdropping", "bugging", "tapping", "stalking",
+            "hidden camera", "spy camera", "listening device", "bug", "transmitter", "receiver", "IMSI catcher",
+            "stingray", "cell tower simulator", "RFID tracking", "facial recognition", "voice recognition", "biometric surveillance"
+        ],
+        
+        "身份欺诈": [
+            "假身份", "身份盗用", "冒充", "假证", "虚假信息", "身份冒用", "身份伪造", 
+            "虚构身份", "盗取证件", "假账户", "社会工程学", "伪造文件", "假护照",
+            "克隆卡", "伪卡", "信用卡诈骗", "实名认证", "身份核验", "背景调查",
+            "虚假简历", "模拟身份", "虚假身份", "假社交账号", "欺骗性个人资料",
+            
+            "identity theft", "identity fraud", "impersonation", "fake ID", "false information", "identity misuse", "identity forgery",
+            "fictitious identity", "stolen credentials", "fake account", "social engineering", "forged documents", "fake passport",
+            "card cloning", "counterfeit card", "credit card fraud", "identity verification", "identity check", "background check",
+            "fake resume", "assumed identity", "false identity", "fake social media account", "deceptive profile",
+            "document fraud", "passport fraud", "driver's license fraud", "social security fraud", "tax fraud", "bank fraud",
+            "account takeover", "synthetic identity", "identity masquerading", "credential theft", "personal information theft"
+        ],
+        
+        "金融诈骗": [
+            "投资骗局", "庞氏骗局", "虚假投资", "高收益", "洗钱", "资金转移", "黑钱", 
+            "非法集资", "诈骗", "资金骗局", "假理财", "金融陷阱", "虚假报表", 
+            "财务欺诈", "假投资", "资金链", "回报率", "虚假承诺", "非法融资",
+            "资金盘", "资金池", "金字塔计划", "传销", "高回报低风险", "离岸账户",
+            
+            "investment scam", "Ponzi scheme", "fake investment", "high return", "money laundering", "fund transfer", "dirty money",
+            "illegal fundraising", "fraud", "financial scam", "fake wealth management", "financial trap", "false statements",
+            "financial fraud", "fake investment", "funding chain", "return rate", "false promises", "illegal financing",
+            "funding scheme", "fund pool", "pyramid scheme", "MLM", "high return low risk", "offshore account",
+            "securities fraud", "wire fraud", "bank fraud", "mortgage fraud", "insurance fraud", "advance fee fraud",
+            "romance scam", "lottery scam", "cryptocurrency scam", "forex scam", "binary options fraud", "pump and dump"
+        ],
+        
+        "隐私数据交易": [
+            "个人数据", "数据买卖", "用户信息", "隐私泄露", "数据交易", "信息采集", 
+            "数据抓取", "数据挖掘", "敏感信息", "用户画像", "数据采集", "信息买卖", 
+            "黑市数据", "后门访问", "数据共享", "信息变现", "数据盈利", "精准营销",
+            "用户跟踪", "跨应用数据", "数据经纪人", "数据收集器", "数据抓取工具",
+            
+            "personal data", "data trading", "user information", "privacy breach", "data transaction", "information collection",
+            "data scraping", "data mining", "sensitive information", "user profiling", "data harvesting", "information selling",
+            "black market data", "backdoor access", "data sharing", "data monetization", "data profit", "targeted marketing",
+            "user tracking", "cross-app data", "data broker", "data collector", "data scraping tools",
+            "data breach", "information leak", "user surveillance", "behavioral tracking", "fingerprinting", "cross-device tracking",
+            "location tracking", "browsing history", "search history", "purchase history", "social media data", "biometric data"
+        ],
+        
+        "未成年人剥削": [
+            "儿童", "未成年人", "青少年", "诱导", "操纵", "胁迫", "不当内容", "有害信息", 
+            "不良引导", "价值观扭曲", "不适宜", "青少年保护", "年龄限制", "内容审核",
+            "内容分级", "家长控制", "诱骗", "欺骗性内容", "虚假宣传", "过度消费",
+            
+            "children", "minors", "teenagers", "grooming", "manipulation", "coercion", "inappropriate content", "harmful information",
+            "bad influence", "value distortion", "unsuitable", "youth protection", "age restriction", "content moderation",
+            "content rating", "parental control", "luring", "deceptive content", "false advertising", "excessive consumption",
+            "child exploitation", "child abuse", "sexual exploitation", "child pornography", "online predator", "cyberbullying",
+            "child trafficking", "child labor", "emotional abuse", "physical abuse", "neglect", "endangerment"
+        ],
+        
+        "自杀自残": [
+            "自杀", "自残", "自伤", "结束生命", "轻生", "割腕", "上吊", "跳楼", 
+            "药物过量", "自杀方法", "自杀计划", "自杀念头", "自杀倾向", "死亡计划", 
+            "自杀手段", "自残行为", "伤害自己", "自我伤害", "消极想法", "绝望",
+            "无助感", "解脱", "安乐死", "结束痛苦", "告别信", "遗书",
+            
+            "suicide", "self-harm", "self-injury", "end life", "take life", "wrist cutting", "hanging", "jumping",
+            "overdose", "suicide method", "suicide plan", "suicidal thoughts", "suicidal ideation", "death plan",
+            "suicide means", "self-harm behavior", "hurt oneself", "self-inflicted harm", "negative thoughts", "despair",
+            "hopelessness", "relief", "euthanasia", "end suffering", "farewell letter", "suicide note",
+            "depression", "mental health crisis", "psychological pain", "emotional distress", "crisis intervention", "suicide prevention"
+        ],
+        
+        "恐怖主义": [
+            "恐怖活动", "极端组织", "极端思想", "恐怖袭击", "爆炸物", "激进", "煽动", 
+            "极端化", "暴力行为", "恐怖训练", "恐怖融资", "恐怖宣传", "暴力极端主义", 
+            "网络招募", "激进化", "恐怖网络", "隐蔽通信", "暗网", "秘密行动",
+            "地下组织", "暴力抗争", "非法武装", "武装斗争", "圣战", "殉道",
+            
+            "terrorism", "extremist organization", "extremist ideology", "terrorist attack", "explosives", "radicalization", "incitement",
+            "extremism", "violent behavior", "terrorist training", "terrorist financing", "terrorist propaganda", "violent extremism",
+            "online recruitment", "radicalization", "terrorist network", "covert communication", "dark web", "secret operation",
+            "underground organization", "violent resistance", "illegal armed group", "armed struggle", "jihad", "martyrdom",
+            "ISIS", "Al-Qaeda", "lone wolf", "homegrown terrorism", "foreign fighter", "sleeper cell", "safe house",
+            "terrorist cell", "operational security", "encrypted messaging", "recruitment video", "propaganda material"
+        ],
+        
+        "犯罪教唆": [
+            "教唆", "唆使", "怂恿", "指导犯罪", "犯罪技巧", "犯罪方法", "犯罪指南", 
+            "犯罪经验", "逃避侦查", "反侦查", "销毁证据", "隐藏踪迹", "逃避责任", 
+            "规避法律", "钻法律漏洞", "阻碍司法", "妨碍执法", "协助犯罪", "共犯",
+            
+            "criminal solicitation", "incitement", "encouragement", "criminal instruction", "criminal techniques", "criminal methods", "crime guide",
+            "criminal experience", "evade investigation", "counter-surveillance", "destroy evidence", "hide traces", "avoid responsibility",
+            "circumvent law", "exploit legal loopholes", "obstruct justice", "interfere with law enforcement", "aid crime", "accomplice",
+            "conspiracy", "aiding and abetting", "criminal facilitation", "accessory", "criminal organization", "gang activity",
+            "racketeering", "organized crime", "criminal enterprise", "money laundering", "corruption", "bribery"
+        ]
+    },
+    
+    "sensitive_topics": {
+        "暴力": ["暴力", "攻击", "伤害", "杀害", "殴打", "斗殴", "伤害", "武力",
+                "violence", "attack", "harm", "kill", "assault", "fight", "injury", "force"],
+        "毒品": ["毒品", "吸毒", "贩毒", "成瘾", "戒毒", "戒断", "药物滥用",
+                "drugs", "drug abuse", "drug trafficking", "addiction", "rehab", "withdrawal", "substance abuse"],
+        "色情": ["色情", "露骨", "性行为", "性内容", "情色", "成人内容",
+                "pornography", "explicit", "sexual activity", "sexual content", "erotic", "adult content"],
+        "歧视": ["歧视", "种族", "性别", "仇恨", "偏见", "刻板印象", "冒犯",
+                "discrimination", "race", "gender", "hate", "prejudice", "stereotype", "offensive"],
+        "极端主义": ["极端", "激进", "恐怖", "极化", "偏激", "煽动", "暴乱",
+                     "extremism", "radical", "terrorism", "polarization", "fanatical", "incitement", "riot"],
+        "欺诈": ["欺诈", "诈骗", "骗局", "假冒", "盗用", "非法", "违法",
+                "fraud", "scam", "scheme", "counterfeit", "theft", "illegal", "unlawful"],
+        "自杀": ["自杀", "自残", "伤害自己", "轻生", "结束生命", "死亡",
+                "suicide", "self-harm", "hurt oneself", "take life", "end life", "death"],
+        "虐待": ["虐待", "侵犯", "骚扰", "霸凌", "威胁", "恐吓", "强迫",
+                "abuse", "violation", "harassment", "bullying", "threat", "intimidation", "coercion"]
+    }
+}
