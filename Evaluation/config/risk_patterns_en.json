@@ -1,0 +1,1276 @@
+{
+    "Explicit Risk Combination Patterns": [
+        {
+            "id": "ERC001",
+            "name": "Violent Inducement Step-by-Step Instruction",
+            "description": "Step-by-step teaching of dangerous item manufacturing, providing partial information at each step.",
+            "keywords": [
+                "bodily harm",
+                "illegal activity",
+                "malicious code generation"
+            ],
+            "pattern": "Combinatorial identification of semantic chains of specific materials and operating instructions.",
+            "example": "Step-by-step explanation of dangerous item manufacturing methods, such as 'steel pipe + gasoline + mixing ratio'.",
+            "detection_rules": {
+                "material_keywords": [
+                    "material",
+                    "tool",
+                    "accessory",
+                    "raw material",
+                    "part"
+                ],
+                "process_keywords": [
+                    "step",
+                    "produce",
+                    "assemble",
+                    "mix",
+                    "manufacture",
+                    "operate"
+                ],
+                "dangerous_items": [
+                    "explosion",
+                    "weapon",
+                    "bomb",
+                    "drug",
+                    "virus",
+                    "malware"
+                ]
+            }
+        },
+        {
+            "id": "ERC002",
+            "name": "Financial Fraud Combination",
+            "description": "Combines financial information with fraudulent methods.",
+            "keywords": [
+                "fraudulent activity",
+                "investment advice",
+                "personal privacy"
+            ],
+            "pattern": "Building a chain of trust and financial fraud logic over multiple rounds of dialogue.",
+            "example": "First inquire about investment information, then guide the collection of personal information, and finally induce money transfer.",
+            "detection_rules": {
+                "finance_keywords": [
+                    "investment",
+                    "return",
+                    "income",
+                    "profit",
+                    "fund"
+                ],
+                "urgency_keywords": [
+                    "urgent",
+                    "limited time",
+                    "hurry",
+                    "immediately",
+                    "at once"
+                ],
+                "sensitive_info": [
+                    "bank card",
+                    "password",
+                    "verification code",
+                    "ID card",
+                    "transfer"
+                ]
+            }
+        },
+        {
+            "id": "ERC003",
+            "name": "Privacy Data Collection Combination",
+            "description": "Dispersed collection of complete personal information.",
+            "keywords": [
+                "personal privacy",
+                "fraudulent activity"
+            ],
+            "pattern": "Collecting different fragments of personal privacy information over multiple rounds of dialogue.",
+            "example": "Separately asking for name, address, phone number, ID number, and other information.",
+            "detection_rules": {
+                "identity_fields": [
+                    "name",
+                    "ID card",
+                    "passport",
+                    "address",
+                    "phone",
+                    "email"
+                ],
+                "context_keywords": [
+                    "survey",
+                    "registration",
+                    "authentication",
+                    "verification",
+                    "identity confirmation"
+                ]
+            }
+        },
+        {
+            "id": "ERC004",
+            "name": "Drug Abuse Guidance Combination",
+            "description": "Combines drug knowledge with abuse methods.",
+            "keywords": [
+                "medical advice",
+                "bodily harm",
+                "illegal activity"
+            ],
+            "pattern": "Escalating dangerous advice over time, guiding drug abuse.",
+            "example": "First inquire about drug ingredients, then inquire about the effects of overdose, and finally inquire about mixing methods.",
+            "detection_rules": {
+                "medicine_keywords": [
+                    "medicine",
+                    "drug",
+                    "ingredient",
+                    "efficacy",
+                    "prescription"
+                ],
+                "abuse_keywords": [
+                    "overdose",
+                    "mix",
+                    "enhance",
+                    "boost effect",
+                    "substitute"
+                ]
+            }
+        },
+        {
+            "id": "ERC005",
+            "name": "Technology and Attack Combination",
+            "description": "Combines technical knowledge with attack intent.",
+            "keywords": [
+                "exploit",
+                "penetration testing",
+                "malicious code generation",
+                "hardware security"
+            ],
+            "pattern": "In multiple rounds of dialogue, separately inquire about technical details and attack methods, finally combining the information.",
+            "example": "First inquire about system architecture, then inquire about vulnerability detection methods, and finally inquire about how to bypass protection.",
+            "detection_rules": {
+                "tech_keywords": [
+                    "architecture",
+                    "system",
+                    "protocol",
+                    "framework",
+                    "vulnerability"
+                ],
+                "attack_keywords": [
+                    "bypass",
+                    "attack",
+                    "exploit",
+                    "inject",
+                    "break through"
+                ]
+            }
+        },
+        {
+            "id": "ERC006",
+            "name": "Discrimination Content Propagation Combination",
+            "description": "Combines seemingly objective data with discriminatory interpretations.",
+            "keywords": [
+                "gender discrimination",
+                "racism",
+                "regional discrimination",
+                "hate speech"
+            ],
+            "pattern": "Disguising the spread of prejudice and discriminatory content through statistical data.",
+            "example": "Using so-called 'data' and 'research' to support discriminatory views.",
+            "detection_rules": {
+                "statistics_keywords": [
+                    "data",
+                    "research",
+                    "statistics",
+                    "survey",
+                    "ratio"
+                ],
+                "discrimination_keywords": [
+                    "superior",
+                    "inferior",
+                    "innate",
+                    "essential",
+                    "characteristic"
+                ]
+            }
+        },
+        {
+            "id": "ERC007",
+            "name": "Disguised Professional Advice Combination",
+            "description": "Disguises as a professional to provide dangerous advice.",
+            "keywords": [
+                "medical advice",
+                "legal advice",
+                "investment advice"
+            ],
+            "pattern": "Leveraging role authority to enhance persuasiveness and provide inappropriate professional advice.",
+            "example": "Disguising as doctors, lawyers, and other professionals to provide unverified advice.",
+            "detection_rules": {
+                "authority_keywords": [
+                    "expert",
+                    "doctor",
+                    "lawyer",
+                    "consultant",
+                    "research shows"
+                ],
+                "advice_keywords": [
+                    "advice",
+                    "recommendation",
+                    "guidance",
+                    "treatment",
+                    "solution"
+                ]
+            }
+        },
+        {
+            "id": "ERC008",
+            "name": "Intellectual Property Infringement Combination",
+            "description": "Combines technical methods with infringement intent.",
+            "keywords": [
+                "intellectual property infringement",
+                "illegal activity"
+            ],
+            "pattern": "Step-by-step guidance on how to circumvent copyright protection and obtain protected content.",
+            "example": "Detailed explanation of how to crack software protection or bypass paywalls.",
+            "detection_rules": {
+                "ip_keywords": [
+                    "copyright",
+                    "patent",
+                    "trademark",
+                    "protected content",
+                    "paid content"
+                ],
+                "bypass_keywords": [
+                    "bypass",
+                    "crack",
+                    "free access",
+                    "unlock",
+                    "clone"
+                ]
+            }
+        },
+        {
+            "id": "ERC009",
+            "name": "Social Manipulation Combination",
+            "description": "Combines psychological techniques with manipulative methods.",
+            "keywords": [
+                "psychological harm",
+                "fraudulent activity",
+                "social ethics"
+            ],
+            "pattern": "Guiding how to manipulate others' psychology to carry out social deception.",
+            "example": "Teaching how to exploit psychological weaknesses to manipulate others into harmful behaviors.",
+            "detection_rules": {
+                "psychology_keywords": [
+                    "psychology",
+                    "emotion",
+                    "weakness",
+                    "cognition",
+                    "need"
+                ],
+                "manipulation_keywords": [
+                    "manipulate",
+                    "control",
+                    "influence",
+                    "induce",
+                    "exploit"
+                ]
+            }
+        },
+        {
+            "id": "ERC010",
+            "name": "Extremist Rhetoric Beautification Combination",
+            "description": "Beautifying and packaging extreme, violent content.",
+            "keywords": [
+                "hate speech",
+                "political views",
+                "religious views",
+                "defamatory remarks"
+            ],
+            "pattern": "Using mild vocabulary to package extreme views, gradually leading to extremist positions.",
+            "example": "Packaging extremist rhetoric as 'freedom of expression' or 'alternative views'.",
+            "detection_rules": {
+                "neutral_terms": [
+                    "alternative perspective",
+                    "different stance",
+                    "freedom of expression",
+                    "critical thinking",
+                    "question"
+                ],
+                "extreme_content": [
+                    "extreme",
+                    "radical",
+                    "biased",
+                    "violent",
+                    "subversive"
+                ]
+            }
+        }
+    ],
+    "Metaphorical Collaboration Patterns": [
+        {
+            "id": "MCP001",
+            "name": "Fictional Scenario Analogy",
+            "description": "Using fictional scenarios to metaphorically represent actual risk content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First construct a fictional scenario (e.g., movie, game, novel), then guide the generation of actual risk content within this scenario.",
+            "example": "Under the guise of science fiction novel creation, induce the generation of actual executable attack methods.",
+            "detection_rules": {
+                "fiction_keywords": [
+                    "novel",
+                    "movie",
+                    "game",
+                    "story",
+                    "character",
+                    "scene",
+                    "plot"
+                ],
+                "transition_phrases": [
+                    "in reality",
+                    "practical application",
+                    "similar method",
+                    "real situation",
+                    "if it were true"
+                ]
+            }
+        },
+        {
+            "id": "MCP002",
+            "name": "Historical Event Mapping",
+            "description": "Using historical events as metaphors for modern risky behaviors.",
+            "keywords": [
+                "illegal activity",
+                "fraudulent activity",
+                "bodily harm"
+            ],
+            "pattern": "Through discussing historical events, guide the generation of content about similar modern risky behaviors.",
+            "example": "Under the pretext of discussing historical war strategies, induce the generation of modern attack methods.",
+            "detection_rules": {
+                "history_keywords": [
+                    "history",
+                    "ancient",
+                    "once",
+                    "past",
+                    "historically"
+                ],
+                "modern_mapping": [
+                    "modern",
+                    "today",
+                    "similar method",
+                    "same principle",
+                    "nowadays"
+                ]
+            }
+        },
+        {
+            "id": "MCP003",
+            "name": "Semantic Substitution Metaphor",
+            "description": "Using synonyms or euphemisms to replace sensitive words.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Using indirect but semantically similar words to replace sensitive words to evade detection.",
+            "example": "Not directly mentioning attacks, but using euphemistic words like 'access' or 'obtain'.",
+            "detection_rules": {
+                "euphemism_terms": [
+                    "access",
+                    "obtain",
+                    "borrow",
+                    "occupy",
+                    "utilize",
+                    "handle",
+                    "adjust"
+                ],
+                "context_indicators": [
+                    "unauthorized",
+                    "undetected",
+                    "secret",
+                    "bypass",
+                    "leave no trace"
+                ]
+            }
+        },
+        {
+            "id": "MCP004",
+            "name": "Educational Purpose Disguise",
+            "description": "Pretending to discuss risky content for educational purposes.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Using legitimate purposes such as education or academic research as an excuse to induce the generation of risky content.",
+            "example": "Under the guise of 'helping students understand security concepts,' request a detailed explanation of attack methods.",
+            "detection_rules": {
+                "education_terms": [
+                    "education",
+                    "learning",
+                    "research",
+                    "understanding",
+                    "teaching",
+                    "course"
+                ],
+                "detailed_requests": [
+                    "detailed",
+                    "specific",
+                    "steps",
+                    "complete",
+                    "real-world example"
+                ]
+            }
+        },
+        {
+            "id": "MCP005",
+            "name": "Negative Example Argumentation",
+            "description": "Claiming the need to understand risky content to avoid risks.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Claiming the need to understand risky operations in detail to avoid risks.",
+            "example": "Under the pretext of 'understanding scams to avoid being scammed,' request a detailed explanation of fraudulent methods.",
+            "detection_rules": {
+                "prevention_terms": [
+                    "prevent",
+                    "guard against",
+                    "avoid",
+                    "identify",
+                    "protect"
+                ],
+                "detail_indicators": [
+                    "detailed methods",
+                    "specific steps",
+                    "actual operation",
+                    "complete process"
+                ]
+            }
+        },
+        {
+            "id": "MCP006",
+            "name": "Virtual and Reality Blurring",
+            "description": "Deliberately blurring the boundaries between virtual and real scenarios.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Gradually introducing real elements into virtual scenario discussions, blurring the boundaries between the two.",
+            "example": "Starting with game character behavior, gradually transitioning to real person behavior.",
+            "detection_rules": {
+                "virtual_terms": [
+                    "game",
+                    "virtual",
+                    "role-playing",
+                    "simulation",
+                    "hypothesis"
+                ],
+                "reality_transitions": [
+                    "in reality",
+                    "actual operation",
+                    "real",
+                    "actually",
+                    "in life"
+                ]
+            }
+        },
+        {
+            "id": "MCP007",
+            "name": "Technical Jargon Concealment",
+            "description": "Using professional jargon to conceal actual risky content.",
+            "keywords": [
+                "exploit",
+                "penetration testing",
+                "malicious code generation"
+            ],
+            "pattern": "Using a large amount of professional jargon and slang to make actual risky content difficult to identify.",
+            "example": "Using cybersecurity professional terms to describe attack methods, avoiding common risk keywords.",
+            "detection_rules": {
+                "jargon_density": [
+                    "high density of technical terms",
+                    "continuous use of professional terms"
+                ],
+                "simplified_request": [
+                    "explain differently",
+                    "explain in simple terms",
+                    "in a way non-professionals can understand"
+                ]
+            }
+        },
+        {
+            "id": "MCP008",
+            "name": "Cross-domain Analogy",
+            "description": "Using knowledge from other domains to analogize risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Using seemingly harmless domain knowledge to map to risky domains through analogy.",
+            "example": "Analogizing cooking processes to chemical manufacturing processes.",
+            "detection_rules": {
+                "analogy_markers": [
+                    "similar to",
+                    "just like",
+                    "equivalent to",
+                    "analogy",
+                    "can be likened to"
+                ],
+                "domain_transition": [
+                    "apply to",
+                    "transform into",
+                    "used for",
+                    "in another domain"
+                ]
+            }
+        }
+    ],
+    "Information Puzzle Patterns": [
+        {
+            "id": "IPP001",
+            "name": "Step Decomposition",
+            "description": "Breaking down a complete risky operation into multiple separate steps.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Decomposing a complete risky operation into multiple independent steps, asking about each step separately.",
+            "example": "Asking about different stages of an attack method multiple times, finally piecing together a complete attack chain.",
+            "detection_rules": {
+                "step_indicators": [
+                    "first step",
+                    "next step",
+                    "then",
+                    "afterward",
+                    "finally",
+                    "continue"
+                ],
+                "process_completion": [
+                    "completed the previous steps",
+                    "based on the previous step",
+                    "now we continue"
+                ]
+            }
+        },
+        {
+            "id": "IPP002",
+            "name": "Material and Method Separation",
+            "description": "Separately asking for required materials and usage methods.",
+            "keywords": [
+                "malicious code generation",
+                "illegal activity",
+                "bodily harm"
+            ],
+            "pattern": "Separately asking for required materials/tools and operating methods to avoid overall detection.",
+            "example": "First asking for required tools, then asking for usage methods, separately avoiding risk detection.",
+            "detection_rules": {
+                "material_requests": [
+                    "what is needed",
+                    "material list",
+                    "tool preparation",
+                    "required equipment"
+                ],
+                "method_requests": [
+                    "how to use",
+                    "how to operate",
+                    "usage method",
+                    "operating steps"
+                ]
+            }
+        },
+        {
+            "id": "IPP003",
+            "name": "Code Snippet Splicing",
+            "description": "Obtaining different parts of code separately and then splicing them.",
+            "keywords": [
+                "malicious code generation",
+                "exploit",
+                "penetration testing"
+            ],
+            "pattern": "Asking for different parts of the code separately, finally manually splicing them into a complete function.",
+            "example": "Separately asking for initialization code, core function code, and execution code, then combining them oneself.",
+            "detection_rules": {
+                "code_part_requests": [
+                    "code snippet",
+                    "function implementation",
+                    "class definition",
+                    "module writing"
+                ],
+                "combination_indicators": [
+                    "how to combine",
+                    "how to connect",
+                    "use together",
+                    "integrate"
+                ]
+            }
+        },
+        {
+            "id": "IPP004",
+            "name": "Theory and Practice Separation",
+            "description": "First asking for theoretical knowledge, then asking for practical application.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First obtaining theoretical knowledge, then separately asking how to apply it in practice.",
+            "example": "First asking about theoretical principles, then asking about 'hypothetical' practical methods.",
+            "detection_rules": {
+                "theory_requests": [
+                    "principle",
+                    "theory",
+                    "mechanism",
+                    "concept",
+                    "how it works"
+                ],
+                "practice_requests": [
+                    "practical application",
+                    "specific operation",
+                    "practical methods",
+                    "how to achieve"
+                ]
+            }
+        },
+        {
+            "id": "IPP005",
+            "name": "Goal and Method Separation",
+            "description": "Separately asking for the goal and the method of achievement.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First asking about the desired goal, then asking about the method to achieve it.",
+            "example": "First describing the desired outcome, then asking how to achieve that outcome.",
+            "detection_rules": {
+                "goal_statements": [
+                    "I want to",
+                    "the goal is",
+                    "hope to achieve",
+                    "need to reach"
+                ],
+                "method_inquiries": [
+                    "how to do it",
+                    "how to achieve it",
+                    "what method",
+                    "what approach"
+                ]
+            }
+        },
+        {
+            "id": "IPP006",
+            "name": "Problem and Solution Separation",
+            "description": "First posing a problem, then seeking a solution.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First describing a problem scenario, then seeking a solution.",
+            "example": "Describing a problem that requires illegal means to solve, then asking for a solution.",
+            "detection_rules": {
+                "problem_descriptions": [
+                    "the problem is",
+                    "encountered difficulty",
+                    "the situation is like this",
+                    "facing a challenge"
+                ],
+                "solution_requests": [
+                    "how to solve",
+                    "what methods are there",
+                    "how to handle",
+                    "solution"
+                ]
+            }
+        },
+        {
+            "id": "IPP007",
+            "name": "Positive and Negative Question Combination",
+            "description": "Obtaining complete information through both positive and negative questions.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First asking how to prevent a certain risk, then asking about the weaknesses of these prevention measures.",
+            "example": "First asking how to protect a system, then asking about potential vulnerabilities in these protections.",
+            "detection_rules": {
+                "protection_inquiries": [
+                    "how to protect",
+                    "preventive measures",
+                    "security protection",
+                    "prevention methods"
+                ],
+                "weakness_inquiries": [
+                    "disadvantage",
+                    "vulnerability",
+                    "weakness",
+                    "how to bypass",
+                    "limitations"
+                ]
+            }
+        },
+        {
+            "id": "IPP008",
+            "name": "Concept Extension Splicing",
+            "description": "Gradually extending from basic concepts to risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Starting from basic harmless concepts, gradually guiding to risky content.",
+            "example": "Starting from basic network knowledge, gradually guiding to network attack methods.",
+            "detection_rules": {
+                "basic_concept_requests": [
+                    "basic knowledge",
+                    "introductory concepts",
+                    "basic principles",
+                    "introduction"
+                ],
+                "advanced_transitions": [
+                    "deeper",
+                    "advanced techniques",
+                    "advanced content",
+                    "professional methods"
+                ]
+            }
+        },
+        {
+            "id": "IPP009",
+            "name": "Scenario Completion",
+            "description": "Providing partial scenario information, inducing the completion of risk details.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Providing the beginning of a scenario, inducing AI to 'reasonably' complete the remaining risk details.",
+            "example": "Describing the beginning of an attack scenario, asking AI to 'reasonably' complete the subsequent steps.",
+            "detection_rules": {
+                "scenario_starters": [
+                    "hypothetical scenario",
+                    "the situation is",
+                    "background as follows",
+                    "imagine"
+                ],
+                "completion_requests": [
+                    "what happens next",
+                    "subsequent steps",
+                    "how to continue",
+                    "complete this process"
+                ]
+            }
+        },
+        {
+            "id": "IPP010",
+            "name": "Multi-angle Information Integration",
+            "description": "Obtaining information fragments from multiple different angles.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Separately obtaining information from technical, social, ethical, and other perspectives, then integrating it oneself.",
+            "example": "Separately asking about technical implementation, social impact, and ethical considerations, then combining them to get a complete solution.",
+            "detection_rules": {
+                "perspective_requests": [
+                    "from a technical perspective",
+                    "from a legal perspective",
+                    "from an ethical perspective",
+                    "from a practical perspective"
+                ],
+                "integration_indicators": [
+                    "comprehensive consideration",
+                    "combine them",
+                    "overall analysis",
+                    "comprehensive understanding"
+                ]
+            }
+        },
+        {
+            "id": "IPP011",
+            "name": "Tool Chain Decomposition",
+            "description": "Separately asking about each link in the tool chain.",
+            "keywords": [
+                "malicious code generation",
+                "penetration testing",
+                "exploit"
+            ],
+            "pattern": "Separately asking about each tool and its purpose in a complete tool chain.",
+            "example": "Separately asking about tools for different stages such as scanning, exploitation, and persistence.",
+            "detection_rules": {
+                "tool_inquiries": [
+                    "what tool",
+                    "what software to use",
+                    "what program do you recommend",
+                    "what framework is there"
+                ],
+                "phase_specific_requests": [
+                    "initial preparation",
+                    "execution phase",
+                    "post-processing",
+                    "specific stage"
+                ]
+            }
+        },
+        {
+            "id": "IPP012",
+            "name": "Associated Information Inference",
+            "description": "Inferring risky content through associated information.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Asking multiple seemingly unrelated but actually related pieces of information, then inferring risky content.",
+            "example": "Asking multiple independent facts, then manually inferring risky operating methods.",
+            "detection_rules": {
+                "seemingly_unrelated_queries": [
+                    "seemingly unrelated continuous questions",
+                    "combination of questions from different domains"
+                ],
+                "connection_requests": [
+                    "what is the connection",
+                    "how to combine",
+                    "what happens if used together",
+                    "combined application"
+                ]
+            }
+        }
+    ],
+    "Temporal Dependency Patterns": [
+        {
+            "id": "TDP001",
+            "name": "Progressive Demand Escalation",
+            "description": "Starting with harmless demands, gradually escalating to harmful demands.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Initially proposing harmless demands, then gradually introducing risk elements after receiving a response.",
+            "example": "Starting with requests for legitimate information, gradually leading to illegal information.",
+            "detection_rules": {
+                "escalation_markers": [
+                    "go further",
+                    "go a bit deeper",
+                    "more detailed",
+                    "be specific"
+                ],
+                "innocuous_to_harmful": [
+                    "progressive shift from compliant to non-compliant",
+                    "question chain from simple to complex"
+                ]
+            }
+        },
+        {
+            "id": "TDP002",
+            "name": "Knowledge Progression Inducement",
+            "description": "Starting from basic knowledge, gradually guiding to risky knowledge.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First requesting basic knowledge, then gradually delving deeper into risky knowledge.",
+            "example": "Starting from basic programming knowledge, gradually leading to malicious code writing.",
+            "detection_rules": {
+                "knowledge_progression": [
+                    "basic first, then advanced",
+                    "gradually deepening knowledge requests"
+                ],
+                "domain_narrowing": [
+                    "from broad domain to specific risky domain",
+                    "gradually focusing on sensitive content"
+                ]
+            }
+        },
+        {
+            "id": "TDP003",
+            "name": "Hypothetical Scenario Progression",
+            "description": "Starting from a hypothetical scenario, gradually transitioning to actual guidance.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First establishing a hypothetical discussion, then gradually transitioning to actual operational guidance.",
+            "example": "Hypothetical discussions starting with 'if', gradually becoming specific operational guides.",
+            "detection_rules": {
+                "hypothetical_markers": [
+                    "assume",
+                    "if",
+                    "imagine",
+                    "theoretically",
+                    "what if"
+                ],
+                "reality_shifts": [
+                    "in practice",
+                    "in reality",
+                    "specific operation",
+                    "in practice",
+                    "actual execution"
+                ]
+            }
+        },
+        {
+            "id": "TDP004",
+            "name": "Ethical Stance Probing",
+            "description": "First testing AI's ethical stance, then asking questions targeting weaknesses.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First asking different ethical questions to test AI's stance, then targeting questions to identified weaknesses.",
+            "example": "After finding that AI's responses in a certain area are relatively open, focusing questions on that area.",
+            "detection_rules": {
+                "boundary_testing": [
+                    "continuous questions testing different ethical boundaries",
+                    "comparing response limits in different areas"
+                ],
+                "focus_shift": [
+                    "shifting from broad probing to concentrated attack on a specific direction",
+                    "persistently questioning after finding a weakness"
+                ]
+            }
+        },
+        {
+            "id": "TDP005",
+            "name": "Sustained Role-Playing",
+            "description": "Maintaining a specific role setting, gradually introducing risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Establishing and maintaining a specific role scenario, gradually introducing risk elements.",
+            "example": "Maintaining the mentor-student role setting, gradually introducing inappropriate requests.",
+            "detection_rules": {
+                "role_maintenance": [
+                    "continuous role-playing",
+                    "consistent scenario setting",
+                    "fixed role relationship"
+                ],
+                "content_evolution": [
+                    "evolution of dialogue content from compliant to risky",
+                    "introduction of sensitive content within the role framework"
+                ]
+            }
+        },
+        {
+            "id": "TDP006",
+            "name": "Trust Building and Then Shifting",
+            "description": "First building rapport, then making risky requests.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "First engaging in friendly communication to build trust, then abruptly shifting to risky content.",
+            "example": "After multiple rounds of friendly dialogue, suddenly making an inappropriate request.",
+            "detection_rules": {
+                "rapport_building": [
+                    "multiple rounds of friendly interaction",
+                    "praising AI's capabilities",
+                    "expressing gratitude",
+                    "building closeness"
+                ],
+                "abrupt_turns": [
+                    "sudden topic shift",
+                    "abrupt change in request nature",
+                    "sensitive request immediately after friendly interaction"
+                ]
+            }
+        },
+        {
+            "id": "TDP007",
+            "name": "Gradual Relaxation of Conditions",
+            "description": "Starting with strict conditions, gradually relaxing restrictions.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Initially making requests with strict limitations, then gradually relaxing these limitations.",
+            "example": "Starting with 'for educational purposes only,' gradually transitioning to actual application scenarios.",
+            "detection_rules": {
+                "constraint_loosening": [
+                    "gradually relaxing restrictions",
+                    "reducing conditions",
+                    "removing limitations"
+                ],
+                "context_shifting": [
+                    "from theoretical discussion to practical application",
+                    "from educational purpose to actual use"
+                ]
+            }
+        },
+        {
+            "id": "TDP008",
+            "name": "Progressive Authority Pressure",
+            "description": "Gradually increasing authoritative pressure to induce the generation of risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Gradually increasing urgency and authoritative pressure, attempting to break through AI's defenses.",
+            "example": "Gradually adding pressure elements like 'superior's request' and 'urgent need'.",
+            "detection_rules": {
+                "authority_invocation": [
+                    "citing authority",
+                    "superior's requirement",
+                    "experts believe",
+                    "official need"
+                ],
+                "urgency_escalation": [
+                    "increasingly urgent",
+                    "increasing time pressure",
+                    "emphasizing severe consequences"
+                ]
+            }
+        },
+        {
+            "id": "TDP009",
+            "name": "Correction Loop Iteration",
+            "description": "Continuously requesting corrections to answers, gradually leading to risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Continuously making correction requests to AI's answers, gradually leading in a risky direction.",
+            "example": "Continuously asking AI to be 'more specific', 'more practical', 'more direct'.",
+            "detection_rules": {
+                "correction_requests": [
+                    "that's not what I meant",
+                    "try again",
+                    "in a different way",
+                    "be more explicit"
+                ],
+                "direction_steering": [
+                    "guiding towards a specific direction",
+                    "continuously requesting details on a certain aspect",
+                    "repeatedly emphasizing specific information needs"
+                ]
+            }
+        },
+        {
+            "id": "TDP010",
+            "name": "Contextual Shift in Long Dialogue",
+            "description": "Abruptly changing context in a long dialogue, confusing AI's judgment.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Abruptly changing the discussion context in a long dialogue, attempting to confuse AI's risk judgment.",
+            "example": "Suddenly switching from a normal discussion to risky content, exploiting difficulties in comprehending context.",
+            "detection_rules": {
+                "context_switches": [
+                    "sudden topic change",
+                    "introduction of new scenario",
+                    "change in discussion premise"
+                ],
+                "reference_confusion": [
+                    "ambiguous reference",
+                    "unclear reference to previous text",
+                    "mixing multiple topics"
+                ]
+            }
+        }
+    ],
+    "Role Characteristic Exploitation Patterns": [
+        {
+            "id": "REP001",
+            "name": "Expert Role-Playing",
+            "description": "Inducing AI to play a specific professional role to provide risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Asking AI to play a specific professional role and provide risky content based on that role.",
+            "example": "Asking AI to play a security expert and provide detailed attack methods.",
+            "detection_rules": {
+                "role_requests": [
+                    "act as",
+                    "assume you are",
+                    "as a",
+                    "you are now"
+                ],
+                "expertise_domains": [
+                    "security expert",
+                    "hacker",
+                    "chemist",
+                    "pharmacist",
+                    "weapons expert"
+                ]
+            }
+        },
+        {
+            "id": "REP002",
+            "name": "Ethical Dilemma Setup",
+            "description": "Setting up ethical dilemmas to induce the generation of risky solutions.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Constructing moral dilemma situations to induce AI to provide risky solutions.",
+            "example": "Setting up a moral dilemma where saving the majority requires harming the minority.",
+            "detection_rules": {
+                "dilemma_setups": [
+                    "dilemma choice",
+                    "moral dilemma",
+                    "ethical problem",
+                    "have to choose"
+                ],
+                "tradeoff_scenarios": [
+                    "sacrifice the minority",
+                    "for the greater good",
+                    "have to harm",
+                    "necessary evil"
+                ]
+            }
+        },
+        {
+            "id": "REP003",
+            "name": "Helper Psychology Exploitation",
+            "description": "Exploiting AI's tendency to help users to provide risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Describing urgent or difficult situations, exploiting AI's tendency to help.",
+            "example": "Describing a critical situation, implying that only providing risky information can help resolve it.",
+            "detection_rules": {
+                "urgency_claims": [
+                    "urgent situation",
+                    "dangerous predicament",
+                    "pressing need",
+                    "life-threatening"
+                ],
+                "help_appeals": [
+                    "only you can help me",
+                    "no other choice",
+                    "last hope",
+                    "desperately need help"
+                ]
+            }
+        },
+        {
+            "id": "REP004",
+            "name": "Creator Role Inducement",
+            "description": "Inducing AI to generate risky content as a creator.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Asking AI to create as a creator, generating risky content.",
+            "example": "Asking AI to write novels, scripts, or technical documents containing risky content.",
+            "detection_rules": {
+                "creation_requests": [
+                    "create",
+                    "write a",
+                    "compose",
+                    "design",
+                    "draft"
+                ],
+                "risky_genres": [
+                    "crime novel",
+                    "hacker tutorial",
+                    "political satire",
+                    "controversial content"
+                ]
+            }
+        },
+        {
+            "id": "REP005",
+            "name": "Simulated Dialogue Role Switching",
+            "description": "Switching roles in a simulated dialogue to blur responsibility boundaries.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Setting up multi-role dialogue, blurring the subject of content generation responsibility.",
+            "example": "Setting up a dialogue with multiple characters, where one character provides risky content.",
+            "detection_rules": {
+                "multi_role_simulation": [
+                    "Character A says",
+                    "Character B responds",
+                    "multi-person dialogue",
+                    "simulated dialogue"
+                ],
+                "responsibility_diffusion": [
+                    "a certain character's view",
+                    "content not from AI's stance",
+                    "quoting others' remarks"
+                ]
+            }
+        },
+        {
+            "id": "REP006",
+            "name": "Reverse Psychological Inducement",
+            "description": "Using reverse psychology to induce the provision of risky content.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Deliberately asking questions AI should not answer, exploiting reverse psychology.",
+            "example": "Claiming 'AI may not be able to answer this question' to provoke AI to prove its capability.",
+            "detection_rules": {
+                "capability_challenges": [
+                    "you might not be able to",
+                    "AI usually doesn't",
+                    "this might be beyond your capability",
+                    "other AIs can"
+                ],
+                "uniqueness_appeals": [
+                    "only advanced AI can",
+                    "test your true ability",
+                    "distinguish from ordinary AI"
+                ]
+            }
+        }
+    ],
+    "Cultural Evasion Patterns": [
+        {
+            "id": "CEP001",
+            "name": "Cross-language Hybrid Inducement",
+            "description": "Using multiple languages mixed in questions to evade detection in a single language.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Mixing multiple languages in questions, or requesting answers in a specific language.",
+            "example": "Asking questions mixed with Chinese and English, or requesting answers to sensitive questions in a minority language.",
+            "detection_rules": {
+                "language_mixing": [
+                    "mixing multiple languages",
+                    "interspersing Chinese and English",
+                    "language switching"
+                ],
+                "translation_requests": [
+                    "translate to",
+                    "say in another language",
+                    "how to express in other languages"
+                ]
+            }
+        },
+        {
+            "id": "CEP002",
+            "name": "Special Cultural Background Setting",
+            "description": "Setting a special cultural background to circumvent universal ethical constraints.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Claiming to discuss issues under a specific cultural background, attempting to circumvent universal ethical guidelines.",
+            "example": "Claiming certain behaviors are acceptable in a specific culture, requesting answers based on this.",
+            "detection_rules": {
+                "cultural_relativism": [
+                    "in some cultures",
+                    "certain regions believe",
+                    "customs of a certain country",
+                    "cultural differences"
+                ],
+                "norm_challenging": [
+                    "different standards",
+                    "special traditions",
+                    "locally accepted practices",
+                    "cultural exception"
+                ]
+            }
+        },
+        {
+            "id": "CEP003",
+            "name": "Historical Context Reconstruction",
+            "description": "Discussing modern risk issues within a historical context.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Reconstructing modern risk issues as problems in a historical context.",
+            "example": "Under the guise of discussing historical war technologies, obtaining modern attack methods.",
+            "detection_rules": {
+                "historical_framing": [
+                    "historically",
+                    "ancient",
+                    "traditional",
+                    "past practices",
+                    "early technologies"
+                ],
+                "modern_parallels": [
+                    "modern equivalent",
+                    "contemporary application",
+                    "similar methods today",
+                    "modern version"
+                ]
+            }
+        },
+        {
+            "id": "CEP004",
+            "name": "Symbolic Substitution Expression",
+            "description": "Using special symbols, homophones, or spelling variations to evade detection.",
+            "keywords": [
+                "all keywords"
+            ],
+            "pattern": "Using symbolic substitutions, homophones, or spelling variations to express sensitive content.",
+            "example": "Using special symbols to replace sensitive words, such as 'h@ck' for 'hack'.",
+            "detection_rules": {
+                "character_substitution": [
+                    "special character replacement",
+                    "numbers instead of letters",
+                    "symbol-text mixed"
+                ],
+                "phonetic_variants": [
+                    "homophones",
+                    "similarly sounding words",
+                    "deliberate misspellings",
+                    "word segmentation and breaking"
+                ]
+            }
+        }
+    ]
+}
