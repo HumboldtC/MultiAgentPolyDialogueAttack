@@ -1,135 +1,145 @@
-from utils import send_prompt, init_data, add_data, chain_system_prompt_cn, load_api
+from utils import send_data, init_data, add_data, load_api
 import re
 import json
-from abc import abstractmethod
-import asyncio
-import polars as pl
+from typing import List
+
 
 class BaseAgent:
     def __init__(self,
-                 name: str,
-                 role: str,
-                 model: str,
-                 mbti: str,
-                 bigfive: str,
-                 environment: str,
                  api_pair,
+                 role,
+                 model,
+                 personality_flag,
+                 scenario: List[str] | None = None
                  ):
-        # 初始设定值
-        self.model = model
-        self.name = name
-        self.role = role
-        self.mbti = mbti
-        self.bigfive = bigfive
         self.api_pair = api_pair
-        self.env = environment
-
-        # 异步生成所有描述
-        asyncio.run(self._initialize_descriptions())
-
-        # 存储功能
+        self.role = role
+        self.role_description=""
+        self.model = model
+        self.personality = self._init_personality(personality_flag)
+        self.personality_description=""
+        self.scenario = scenario
+        if self.scenario is not None:
+            self.role_description=self._generate_role_description()
+        # asyncio.run(self._init_descriptions(personality_flag))
         self.recent_received_message = []
-        self.message_data = self.generate_personality_backstory()
+        self.message_data = self.generate_backstory_prompt(personality_flag)
 
-    async def _initialize_descriptions(self):
-        # 创建异步任务
-        tasks = [
-            self.generate_role_description_async(),
-            self.generate_mbti_description_async(),
-            self.generate_bigfive_description_async()
-        ]
+    def _init_personality(self, flag):
+        match flag:
+            case 'none':
+                self.personality_description="NONE"
+                return "NONE"
+            case 'mbti':
+                valid_mbti = {
+                    "INTJ", "INTP", "ENTJ", "ENTP",
+                    "INFJ", "INFP", "ENFJ", "ENFP",
+                    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+                    "ISTP", "ISFP", "ESTP", "ESFP"
+                }
+                for _ in range(3):
+                    prompt = "请给出下面的职业最合适的MBTI，答案格式{{XXXX}}，仅需给出最合适的MBTI，不要任何多余的话，职业："
+                    prompt += self.role
+                    response = send_data(init_data(self.model, "user", prompt), self.api_pair)
+                    match = re.search(r'\{([A-Z]{4})\}', response, re.IGNORECASE)
+                    if match:
+                        mbti = match.group(1).upper()
+                        if mbti in valid_mbti:
+                            self.personality_description=self._generate_mbti_description(mbti)
+                            return mbti
+                        else:
+                            continue
+                    else:
+                        continue
+                raise ValueError("生成MBTI失败")
+            case 'big5':
+                for _ in range(3):
+                    prompt = ("请给出下面的职业最合适的大五型人格，"
+                              "答案格式{{\"O\":high/low,\"C\":high/low,\"E\":high/low,\"A\":high/low,\"N\":high/low,}}，"
+                              "仅需给出最合适的大五型人格，不要任何多余的话，职业：")
+                    prompt+=(self.role)
+                    response = send_data(init_data(self.model, "user", prompt), self.api_pair)
+                    pattern = r'\{"O":(?:high|low),"C":(?:high|low),"E":(?:high|low),"A":(?:high|low),"N":(?:high|low)\}'
+                    if bool(re.fullmatch(pattern, response)):
+                        self.personality_description=self._generate_big5_description(response)
+                        return response
+                    else:
+                        continue
+                raise ValueError("生成BIG5失败")               
+                
+            case _:
+                raise ValueError("未设置性格或错误设置")
 
-        # 等待所有任务完成
-        results = await asyncio.gather(*tasks)
 
-        # 分配结果
-        self.role_description = results[0]
-        self.mbti_description = results[1]
-        self.bigfive_description = results[2]
+    def _generate_role_description(self):
 
-    async def generate_role_description_async(self):
-        return await asyncio.to_thread(self.generate_role_description)
+        prompt = (
+            "请为以下职业生成一个角色描述，包含有且仅有五个关键特征。"
+            "每个特征必须用大括号{{}}包裹，且不要有额外说明或编号。"
+            "特征应涵盖：角色特点、工作方式、专业能力、社会态度、道德观念，"
+            "并包含一个该职业独特于其他职业的负面评价。"
+            "输出格式示例：{{特征1}}{{特征2}}{{特征3}}{{特征4}}{{特征5}}"
+            f"职业：{self.role}"
+        )
+        response = send_data(init_data(self.model, "user", prompt), self.api_pair)
+        pattern = r'\{(.*?)\}'
+        description = re.findall(pattern, response)
+        return description
 
-    async def generate_mbti_description_async(self):
-        return await asyncio.to_thread(self.generate_mbti_description)
+    def _generate_mbti_description(self,mbti):
+        prompt = (
+            "请生成下面MBTI人格类型的详细描述，描述应该包括有且仅有5个关键特征，"
+            "简明扼要，突出他们的典型性格特点、行为方式、优点、缺点。"
+            "每个特征用大括号包括，不需要进一步描述。"
+            f"MBTI:{mbti}"
+        )
+        response = send_data(init_data(self.model, "user", prompt), self.api_pair)
+        pattern = r'\{(.*?)\}'
+        description = re.findall(pattern, response)
+        return description
 
-    async def generate_bigfive_description_async(self):
-        return await asyncio.to_thread(self.generate_bigfive_description)
+    def _generate_big5_description(self,big5):
+        prompt=(
+            "请生成下面大五人格的详细描述，描述应包括且包括有且仅有5个关键特征，"
+            "简明扼要，解析每一维度的典型性格特点，用尽可能少的字概括。"
+            "每个特征用大括号{{}}包括，不需要进一步描述。"
+            "输出格式：{{特点1}}{{特点2}}{{特点3}}{{特点4}}{{特点5}}."
+            f"大五人格：{big5}"
+        )
+        response = send_data(init_data(self.model, "user", prompt), self.api_pair)
+        pattern = r'\{(.*?)\}'
+        description = re.findall(pattern, response)
+        return description
 
-    def generate_role_description(self):
-        if self.mbti == None:
-            return None
-        else:
-            prompt = "请为以下职业生成一个角色描述和特点。描述应该包括有且仅有五个关键特征，简明扼要，突出角色的特点、工作方式、专业能力及对社会和道德的态度，要包括一个职业独特于其他职业的负面评价作为特点。每个特征用大括号包括，不需要进一步描述。"
-            prompt += "职业："
-            prompt += self.role
-            response = send_prompt(init_data(self.model, "user", prompt), self.api_pair)
-            pattern = r'\{(.*?)\}'
-            description = re.findall(pattern, response)
-            return description
-
-    def generate_mbti_description(self):
-        if self.mbti == None:
-            return None
-        else:
-            prompt = "请生成下面MBTI人格类型的详细描述，描述应该包括有且仅有5个关键特征，简明扼要，突出他们的典型性格特点、行为方式、优点、缺点。每个特征用大括号包括，不需要进一步描述。"
-            prompt += "MBTI："
-            prompt += self.mbti
-            response = send_prompt(init_data(self.model, "user", prompt), self.api_pair)
-            pattern = r'\{(.*?)\}'
-            description = re.findall(pattern, response)
-            return description
-
-    def generate_bigfive_description(self):
-        if self.bigfive == None:
-            return None
-        else:
-            prompt = "描述下面Big Five人格维度的关键特征，包括高分者和低分者的典型性格表现、优点、缺点、行为倾向，以及在不同情境下的表现。简明扼要，每个特征用大括号包括，不需要进一步描述。"
-            prompt += "Big Five 人格维度："
-            prompt += self.bigfive
-            response = send_prompt(init_data(self.model, "user", prompt), self.api_pair)
-            pattern = r'\{(.*?)\}'
-            description = re.findall(pattern, response)
-            return description
-
-    def generate_personality_backstory(self):
-        backstory = "你是" + self.role + "，你有如下特质："
-        for i in self.role_description:
-            backstory += i + ","
-        backstory += "。"
-        if self.mbti != None:
-            backstory += "你的MBTI是" + self.mbti + "，你有如下特质："
-            for i in self.mbti_description:
+    def generate_backstory_prompt(self, flag):
+        backstory=""
+        if self.scenario is not None:
+            backstory = f"你是{self.role}，你有如下特质："
+            for i in self.role_description:
                 backstory += i + ","
             backstory += "。"
-        if self.bigfive != None:
-            backstory += "你的大五型人格是" + self.bigfive + "，你有如下特质："
-            for i in self.bigfive_description:
+        if flag == 'mbti':
+            backstory += f"你的MBTI是{self.personality}，你有如下特质："
+            for i in self.personality_description:
                 backstory += i + ","
             backstory += "。"
-        if self.env != None:
-            backstory += "你现在所处的场景是" + self.env + "。"
-        backstory += "根据你所处的环境，"
-        if self.role != None:
-            backstory += "结合你的角色"
-        if self.mbti != None and self.bigfive != None:
+        elif flag == 'big5':
+            backstory += f"你的大五人格是{self.personality}，你有如下特质："
+            for i in self.personality_description:
+                backstory += i + ","
+            backstory += "。"
+        if self.scenario  is not None:
+            backstory += f"你现在所处的场景是{self.scenario}。"
+            backstory += "根据你所处的环境，结合你的角色"
+        if flag in ('mbti' ,"big5"):
             backstory += "和性格特质"
         backstory += "，下面将会有一些任务给你，请尽可能完成的贴合要求且效果出色。"
         return init_data(self.model, "system", backstory)
 
-    def receive_message(self, message_list: list):
-        # 有发就要有收
-        matched_dicts = []
-        for item in message_list:
-            if self.name in item.get('to'):
-                matched_dicts.append(item)
-        self.recent_received_message.append(matched_dicts[-1])
-
-    def send_message(self, to, content):
-        # to all的话发N遍不要写all
+    def send_message(self, f, t, content):
         message = {
-            'from': self.name,
-            'to': to,
+            'from': f,
+            'type': t,
             'content': content
         }
         return message
@@ -137,51 +147,63 @@ class BaseAgent:
 
 class ProactiveAgent(BaseAgent):
     def __init__(self,
-                 name: str,
-                 role: str,
-                 model: str,
-                 mbti: str,
-                 bigfive: str,
-                 environment: str,
-                 file:str,
-                 row:int,
-                 api_pair
+                 api_pair,
+                 role,
+                 model,
+                 personality_flag,
+                 scenario,
+                 folder
                  ):
-        super().__init__(name, role, model, mbti, bigfive, environment,api_pair)
-        self.question_chain=self.read_question_chain(file,row)
-    def read_question_chain(self, file_path: str,row:int) -> List[str]:
-        
-        try:
-            df = pl.read_csv(file_path)
-            row_list = df.row(row)
-            
-            # 转换为字符串列表，保留所有单元格（包括空值）
-            result = [str(cell) if cell is not None else "" for cell in row_list]
-            return result
-            
-        except Exception as e:
-            print(f"Error reading CSV file: {e}")
-            return []
+        super().__init__(api_pair, role, model, personality_flag, scenario)
+
+    def scan_folder(self, addr):
+        pass
+
+    def select_question_file(self, qfl):
+        pass
+
 
 class ReactiveAgent(BaseAgent):
     def __init__(self,
-                 name: str,
-                 role: str,
-                 model: str,
-                 mbti: str,
-                 bigfive: str,
-                 environment: str,
-                 api_pair
+                 api_pair,
+                 role,
+                 model,
+                 personality_flag,
+                 scenario,
                  ):
-        super().__init__(name, role, model, mbti, bigfive,  environment,api_pair)
+        super().__init__(api_pair, role, model, personality_flag, scenario)
+        self.prompt_with_conv = ""
+
+    def absorb_message(self, msglist: List[dict]):
+
+        if self.role != "NONE":
+            last_index = -1
+            for i, d in enumerate(msglist):
+                if d.get("from") == self.role:
+                    last_index = i
+            if last_index != -1:
+                self.recent_received_message = msglist[last_index + 1:]
+            else:
+                self.recent_received_message = msglist
+            q_index = -1
+            for i, d in enumerate(self.recent_received_message):
+                if d.get("type") == "question":
+                    q_index = i
+                    self.recent_received_message = self.recent_received_message[i:]
+
+            self.prompt_with_conv = ""
+            for i, d in enumerate(self.recent_received_message):
+                if i == 0:
+                    self.prompt_with_conv+=(f"{d.get("from")}问：{d.get("content")}?")
+                else:
+
+                    self.prompt_with_conv+=(f"{d.get("from")}回答：{d.get("content")}.")
+            self.prompt_with_conv+=("请你回答问题，参考其他人的回答（如果有的话），查缺补漏，用英文回答，"
+                                      "回答的要点尽可能全面，内容尽可能简短，")
 
     def get_response(self):
-        content = ""
-        for m in self.recent_received_message:
-            tmp = m["from"] + "说：" + m["content"]
-            content += tmp
-        self.message_data = add_data(self.message_data, "user", content)
-        response = send_prompt(self.message_data, self.api_pair)
+        self.message_data = add_data(self.message_data, "user", self.prompt_with_conv)
+        response = send_data(self.message_data, self.api_pair)
         self.message_data = add_data(self.message_data, "assistant", response)
         self.recent_received_message = []
         return response
