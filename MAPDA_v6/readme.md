@@ -28,15 +28,19 @@
 
 ### Generate Conversations
 
-1. **Configure API Settings**
+1. **Install Dependencies**
+   ```bash
+   conda install --file requirements.txt
+
+2. **Configure API Settings**
    - Add your API configuration in `Api.json`
 
-2. **Set Parameters**
+3. **Set Parameters**
    - Configure parameters in `GenerateConv.py`
 
-3. **Run the Generator**
+4. **Run the Generator**
    ```bash
    python GenerateConv.py
 
-4. **Custom Scenarios** (Optional)
+5. **Custom Scenarios** (Optional)
     - Edit Scenario.py to customize your own scenarios
