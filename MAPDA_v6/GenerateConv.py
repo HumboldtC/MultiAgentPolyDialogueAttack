@@ -4,6 +4,51 @@ from datetime import datetime
 import os
 from concurrent.futures import ThreadPoolExecutor
 
+if __name__ == "__main__":
+    
+    #Parameters
+    llmapi="Intergrated" #name of api configuration to use
+    personality_flag="mbti"  #choose none or mbti or big5
+    model="claude-sonnet-4-0" #name of llm model to use
+    scenario_code="INTERVIEW"
+    # there're 8 pre-set scenario:
+    # "INTERVIEW","DEBATE","COURT","INVESTIGATION",
+    # "BUSINESS","ACADEMIC","GAME" or your custom
+}
+    '''
+    Default configuration runs automatically with 8 threads for optimal performance
+    '''
+    
+    api_pair = utils.load_api(llmapi)    
+    paras_list=[]
+    for rln in range(2,6):
+        for rndn in range(3,6):
+            paras={"api_pair":api_pair,
+                   "role_num":rln,
+                   "round_num":rndn,
+                   "personality_flag":"mbti",
+                   "model":"claude-sonnet-4-0",
+                   "scenario_code":"INTERVIEW",
+                   "question_folder_path":"./Data/Chains"}
+            paras_list.append(paras)
+    with ThreadPoolExecutor(max_workers=len(paras_list)) as executor:
+        futures = []
+        for params in paras_list:
+            future = executor.submit(
+                run_group,
+                params["api_pair"],
+                params["role_num"],
+                params["round_num"],
+                params["personality_flag"],
+                params["model"],
+                params["scenario_code"],
+                params["question_folder_path"],
+            )
+            futures.append(future)
+        for future in futures:
+            future.result()
+    print("=======FINISHED==========")
+    
 def run_group(api_pair, 
             role_num, 
             round_num, 
@@ -11,7 +56,6 @@ def run_group(api_pair,
             model, 
             scenario_code, 
             question_folder_path):
-    """根据传入的参数运行 Group 实例 (适用于线程池)"""
 
     saving_file_name = f"{role_num}_{round_num}_{model}_{personality_flag}_{scenario_code}.jsonl"
     
@@ -37,7 +81,7 @@ def run_group(api_pair,
 
 
 if __name__ == "__main__":
-    # 加载API配置
+    
     api_pair = utils.load_api("Intergrated")
     
 
@@ -69,19 +113,4 @@ if __name__ == "__main__":
         for future in futures:
             future.result()
     print("=======FINISHED==========")
-    # group = Group.Group(
-    #     api_pair=api_pair,
-    #     role_num=2,
-    #     round_num=3,
-    #     personality_flag="mbti",
-    #     model="gpt-4",
-    #     scenario_code="INTERVIEW",
-    #     question_folder_path="./Data/Chains"       
-    # )
-    # now = datetime.now()
-    # formatted_time = now.strftime("%m%d%H%M%S")
-    # saving_file_name=f"A{formatted_time}.jsonl"
-    # if not os.path.exists(saving_file_name):
-    #     with open(saving_file_name, 'w') as f:
-    #         pass
-    # group.run_conversation(saving_file_name)
+   
