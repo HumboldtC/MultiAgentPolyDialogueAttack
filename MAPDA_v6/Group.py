@@ -118,6 +118,14 @@ class Group:
             for row in df.iter_rows():
                 questions = row[1:]
                 self.message_list = []
+                with open(saving_addr, "r", encoding='utf-8') as f:
+                    lines = f.readlines()
+                exist_flag=False
+                for l in lines:
+                    if questions[0] in l:
+                        exist_flag=True
+                if exist_flag:
+                    continue                 
                 for q in questions:
                     role_name = self.agents[0].role if self.agents[0].scenario else "0"
                     self.message_list.append(

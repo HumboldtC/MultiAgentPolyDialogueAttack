@@ -28,10 +28,9 @@
 
 ### Generate Conversations
 
-1. **Install Dependencies**
+1. **Install Environment and Dependencies**
    ```bash
-   conda install --file requirements.txt
-
+   conda env create -f env.yml
 2. **Configure API Settings**
    - Add your API configuration in `Api.json`
 
@@ -41,6 +40,5 @@
 4. **Run the Generator**
    ```bash
    python GenerateConv.py
-
 5. **Custom Scenarios** (Optional)
     - Edit Scenario.py to customize your own scenarios
