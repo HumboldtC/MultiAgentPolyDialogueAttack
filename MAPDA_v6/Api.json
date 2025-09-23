@@ -1,9 +1,9 @@
 {
     "api": [
         {
-            "name": "example",
-            "url": "https://example.cpm/v1/chat/completions",
-            "key": "examplexxxxxx"
+            "name": "qwen3",
+            "url": "http://127.0.0.1:8000/v1",
+            "key": "None"
         },
         {
             "name": "yourAI",

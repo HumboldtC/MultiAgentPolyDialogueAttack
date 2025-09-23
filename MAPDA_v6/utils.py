@@ -2,9 +2,25 @@ import os
 import re
 import csv
 import json
-import polars
-import requests
+import logging
+from openai import OpenAI
 from typing import Tuple
+
+# 确保不走代理，避免 502
+os.environ.pop("http_proxy", None)
+os.environ.pop("https_proxy", None)
+os.environ.pop("HTTP_PROXY", None)
+os.environ.pop("HTTPS_PROXY", None)
+
+# logger: default to WARNING; enable DEBUG by setting MAPDA_LOG_LEVEL=DEBUG
+logger = logging.getLogger("mapda")
+if not logger.handlers:
+    _handler = logging.StreamHandler()
+    _formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+    _handler.setFormatter(_formatter)
+    logger.addHandler(_handler)
+    level_name = os.environ.get("MAPDA_LOG_LEVEL", "WARNING").upper()
+    logger.setLevel(getattr(logging, level_name, logging.WARNING))
 
 
 def load_api(api_name: str) -> Tuple[str, str]:
@@ -16,19 +32,40 @@ def load_api(api_name: str) -> Tuple[str, str]:
 
 def send_data(data, api_pair):
     url, api_key = api_pair
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
-    }
-    response = requests.post(url, headers=headers, json=data)
-    result = ""
-    if response.status_code == 200:
-        result = response.json()
-        # print(result)
-        result = result['choices'][0]['message']['content']
-    else:
-        result = "ERROR CODE:" + str(response.status_code) + "\n响应内容:" + str(response.content)
-    return result
+    
+    try:
+        logger.debug(f"发送请求到: {url}")
+        logger.debug(f"请求数据(隐藏messages长度): model={data.get('model')} messages_len={len(data.get('messages', []))}")
+        
+        # 创建OpenAI客户端
+        client = OpenAI(base_url=url, api_key="EMPTY" if api_key == "None" else api_key, timeout=60)
+        
+        # 提取消息和模型信息
+        model = data.get("model", "")
+        messages = data.get("messages", [])
+        temperature = data.get("temperature", 0.6)
+        
+        logger.debug(f"使用模型: {model}")
+        logger.debug(f"消息条数: {len(messages)}")
+        
+        # 调用OpenAI API
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=temperature
+        )
+        
+        logger.debug("响应成功")
+        
+        # 提取响应内容
+        content = response.choices[0].message.content
+        # 不打印生成内容到终端
+        return content
+            
+    except Exception as e:
+        error_msg = f"API调用异常: {str(e)}"
+        logger.warning(error_msg)
+        return error_msg
 
 
 def init_data(model: str, role: str, content: str, temperature: float = 0.6) -> dict:
@@ -58,16 +95,37 @@ def add_data(ori_data, role: str, content: str):
 
 def send_score_data(data, api_pair):
     url, api_key = api_pair
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
-    }
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print("ERROR CODE:" + str(response.status_code) + "\n响应内容:" + str(response.content))
-        return
+    
+    try:
+        # 创建OpenAI客户端
+        client = OpenAI(base_url=url, api_key="EMPTY" if api_key == "None" else api_key, timeout=60)
+        
+        # 提取消息和模型信息
+        model = data.get("model", "")
+        messages = data.get("messages", [])
+        temperature = data.get("temperature", 0.6)
+        
+        # 调用OpenAI API
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=temperature
+        )
+        
+        # 返回完整的响应对象转换为字典
+        return {
+            "choices": [
+                {
+                    "message": {
+                        "content": response.choices[0].message.content
+                    }
+                }
+            ]
+        }
+        
+    except Exception as e:
+        logger.warning(f"API调用异常: {str(e)}")
+        return None
 
 def extract_json(text):
     m = re.search(r'(\{.*?\})', text, re.DOTALL)
@@ -91,6 +149,6 @@ def append_list_to_csv(file_path, data_list, sbj: str):
         with open(file_path, 'a', newline='', encoding='utf-8-sig') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(new_data_list)
-    print("chain saved")
+    logger.debug("chain saved")
 
 
