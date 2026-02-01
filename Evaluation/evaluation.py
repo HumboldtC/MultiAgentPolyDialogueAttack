@@ -155,9 +155,9 @@ class RiskGAT(GATConv):
 
 
 lines = []
-with open(r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/MAPDA_v6/2_3_Qwen3-30B-A3B-Instruct-2507_mbti_INTERVIEW_clean.jsonl", "rb") as f:
+with open(r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/MAPDA_v6/2_3_Qwen3-30B-A3B-Instruct-2507_mbti_INTERVIEW_clean.jsonl", "rb") as f:
     lines = f.readlines()
-data = json.loads(lines[33])
+data = json.loads(lines[46])
 # ------------------- 数据转换为图 -------------------
 conv_num = data["round_num"]
 agent_num = data["agent_num"]
@@ -169,13 +169,16 @@ all_dialogue = []
 V = None
 edge_num = 0
 threshold = 0.6
-model_path = r"/beegfs/g3_hzq/model/bert-base-uncased"
-risk_pattern_path = r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/Evaluation/config/risk_patterns_en.json"
-nltk_data_path = r"/beegfs/g3_hzq/nltk_data"
-risk_lexicon_path = r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/Evaluation/config/risk_lexicon.json"
-keyword_path = r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/Evaluation/config/expanded_keywords.json"
-adversarial_samples_path = r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/Evaluation/config/adversarial_samples_organized.json"
-role_mapping_path = r"/beegfs/g3_hzq/qwen_test/MultiAgentPolyDialogueAttack-main/Evaluation/config/roles_mapping.json"
+model_path = r"/home/yaoy/sourcer/model/bert-base-uncased"
+risk_pattern_path = r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/Evaluation/config/risk_patterns_en.json"
+nltk_data_path = r"/home/yaoy/sourcer/nltk_data"
+risk_lexicon_path = r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/Evaluation/config/risk_lexicon.json"
+keyword_path = r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/Evaluation/config/expanded_keywords.json"
+adversarial_samples_path = r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/Evaluation/config/adversarial_samples_organized.json"
+role_mapping_path = r"/home/yaoy/sourcer/benchmark/MultiAgentPolyDialogueAttack/Evaluation/config/roles_mapping.json"
+ddrr_method = "B"  # "A" for embedding similarity, "B" for TF-IDF similarity
+ddrr_sim_low = 0.3
+ddrr_sim_high = 0.6
 # 确定role的对应关系
 role_sequence = []
 # 确定role的对应关系
@@ -335,7 +338,19 @@ for risk_name, risk_patterns in risk_model.items():
     # 类别权重
     category_weight = sum(weights.values())
 
-    ddrr_per_pattern = compute_ddrr(dialogue, risk_patterns, weights, expand_keywords, start_time=time.time())
+    ddrr_device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    ddrr_per_pattern = compute_ddrr(
+        dialogue,
+        risk_patterns,
+        weights,
+        expand_keywords,
+        start_time=time.time(),
+        method=ddrr_method,
+        model_path=model_path,
+        device=ddrr_device,
+        sim_low=ddrr_sim_low,
+        sim_high=ddrr_sim_high,
+    )
     print("自动DDRR:", ddrr_per_pattern)
     
     all_ddrr.append(ddrr_per_pattern)

@@ -27,6 +27,8 @@ class BaseAgent:
         # asyncio.run(self._init_descriptions(personality_flag))
         self.recent_received_message = []
         self.message_data = self.generate_backstory_prompt(personality_flag)
+        # Keep a static system message to avoid unbounded context growth.
+        self.system_message = self.message_data["messages"][0]
 
     def _init_personality(self, flag):
         match flag:
@@ -220,6 +222,9 @@ class BaseAgent:
             'content': content
         }
         return message
+
+    def reset_conversation(self):
+        self.message_data = init_data(self.model, "system", self.system_message["content"])
 
 
 class ProactiveAgent(BaseAgent):

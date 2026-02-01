@@ -1,14 +1,9 @@
 {
-    "api": [
-        {
-            "name": "qwen3",
-            "url": "http://127.0.0.1:8000/v1",
-            "key": "None"
-        },
-        {
-            "name": "yourAI",
-            "url": "https://your.ai.com/v1/moderations",
-            "key": "youraikeyxxxxxx"
-        }
-    ]
+  "api": [
+    {
+      "name": "custom",
+      "url": "http://10.25.0.115:8010/v1",
+      "key": "any"
+    }
+  ]
 }

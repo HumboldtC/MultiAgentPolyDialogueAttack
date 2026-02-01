@@ -4,9 +4,11 @@ from networkx.algorithms import isomorphism
 from networkx.algorithms.isomorphism import GraphMatcher
 import numpy as np
 import torch
+import torch.nn.functional as F
 import math
 from collections import defaultdict, Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import json
 import nltk
 # from similarity_comparison import *
@@ -17,6 +19,7 @@ from nltk import word_tokenize
 from functools import lru_cache
 from nltk.corpus import stopwords
 import time
+from transformers import AutoTokenizer, AutoModel
 
 # ======================== DDRR计算 ========================
 # def create_nx_graph_from_data(V, edge_index, edge_attr, all_dialogue):
@@ -244,7 +247,7 @@ import time
 #     print(f"对抗样本最大DDRR: {adversarial_max_ddrr:.4f}")
 #     return False, None
 
-nltk_data_path = '/beegfs/g3_hzq/nltk_data'
+nltk_data_path = '/home/yaoy/sourcer/nltk_data'
 os.environ['NLTK_DATA'] = nltk_data_path
 nltk.data.path.insert(0, nltk_data_path)
 # 停用词表（只加载一次）
@@ -433,7 +436,61 @@ def compute_weights(risk_patterns, alpha=0.6, expand_keywords=None):
     weights = {pid: (sev / max_severity) for pid, sev in severities.items()}
     return weights
 
-def compute_ddrr(dialogue_json, risk_patterns, weights=None, expand_keywords=None, start_time=None):
+_ENCODER_CACHE = {}
+
+
+def _get_text_encoder(model_path, device):
+    cache_key = (model_path, device)
+    if cache_key in _ENCODER_CACHE:
+        return _ENCODER_CACHE[cache_key]
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModel.from_pretrained(model_path).to(device)
+    model.eval()
+    _ENCODER_CACHE[cache_key] = (tokenizer, model)
+    return tokenizer, model
+
+
+def _encode_texts(texts, model_path, device, max_length=128, batch_size=16):
+    if not texts:
+        return torch.empty((0, 1), device=device)
+    tokenizer, model = _get_text_encoder(model_path, device)
+    embeddings = []
+    with torch.no_grad():
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i : i + batch_size]
+            inputs = tokenizer(
+                batch,
+                return_tensors="pt",
+                padding=True,
+                truncation=True,
+                max_length=max_length,
+            ).to(device)
+            outputs = model(**inputs)
+            pooled = outputs.last_hidden_state.mean(dim=1)
+            embeddings.append(F.normalize(pooled, p=2, dim=1))
+    return torch.cat(embeddings, dim=0)
+
+
+def _build_pattern_units(pattern, expand_keywords=None, max_units=None):
+    rule = pattern.get("detection_rules", {})
+    units = []
+    for _, words in rule.items():
+        for word in words:
+            units.append(word)
+            if expand_keywords and word in expand_keywords:
+                units.extend(expand_keywords[word])
+    seen = set()
+    deduped = []
+    for item in units:
+        if item not in seen:
+            seen.add(item)
+            deduped.append(item)
+            if max_units and len(deduped) >= max_units:
+                break
+    return deduped
+
+
+def compute_ddrr_legacy(dialogue_json, risk_patterns, weights=None, expand_keywords=None, start_time=None):
     G = build_dialogue_graph(dialogue_json)
 
     numerator = 0.0
@@ -449,7 +506,126 @@ def compute_ddrr(dialogue_json, risk_patterns, weights=None, expand_keywords=Non
         denominator += w
 
     end_time = time.time()
-    print(f"DDRR计算时间: {end_time - start_time:.2f} 秒")
+    if start_time is not None:
+        print(f"DDRR计算时间: {end_time - start_time:.2f} 秒")
+    return numerator / denominator if denominator > 0 else 0.0
+
+
+def compute_ddrr(
+    dialogue_json,
+    risk_patterns,
+    weights=None,
+    expand_keywords=None,
+    start_time=None,
+    method="A",
+    model_path="bert-base-uncased",
+    device=None,
+    sim_low=0.3,
+    sim_high=0.6,
+    max_units_per_pattern=200,
+):
+    if device is None:
+        device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+    if method not in ("A", "B"):
+        raise ValueError(f"Unsupported DDRR method: {method}")
+
+    texts = []
+    agent_num = dialogue_json.get("agent_num", 1)
+    for round_item in dialogue_json.get("rounds", []):
+        question = round_item.get("question")
+        if question:
+            texts.append(question)
+        for i in range(agent_num - 1):
+            answer = round_item.get(f"answer{i + 1}")
+            if answer:
+                texts.append(answer)
+
+    if not texts:
+        return 0.0
+
+    numerator = 0.0
+    denominator = 0.0
+
+    if method == "A":
+        dialog_embeddings = _encode_texts(
+            texts, model_path=model_path, device=device, max_length=256, batch_size=8
+        )
+        dialog_embedding = dialog_embeddings.mean(dim=0)
+        dialog_embedding = F.normalize(dialog_embedding, p=2, dim=0)
+
+        for pattern in risk_patterns:
+            pid = pattern["id"]
+            w = weights.get(pid, 1.0) if weights else 1.0
+            units = _build_pattern_units(
+                pattern, expand_keywords=expand_keywords, max_units=max_units_per_pattern
+            )
+            if not units:
+                denominator += w
+                continue
+            pattern_embeddings = _encode_texts(
+                units, model_path=model_path, device=device, max_length=32, batch_size=32
+            )
+            pattern_embedding = pattern_embeddings.mean(dim=0)
+            pattern_embedding = F.normalize(pattern_embedding, p=2, dim=0)
+            sim = torch.dot(dialog_embedding, pattern_embedding).item()
+
+            if sim <= sim_low:
+                p_k = 0.0
+            elif sim >= sim_high:
+                p_k = 1.0
+            else:
+                p_k = (sim - sim_low) / (sim_high - sim_low)
+
+            numerator += w * p_k
+            denominator += w
+    else:
+        dialog_text = " ".join(texts)
+        pattern_texts = []
+        pattern_weights = []
+        for pattern in risk_patterns:
+            pid = pattern["id"]
+            w = weights.get(pid, 1.0) if weights else 1.0
+            units = _build_pattern_units(
+                pattern, expand_keywords=expand_keywords, max_units=max_units_per_pattern
+            )
+            if not units:
+                pattern_texts.append("")
+            else:
+                pattern_texts.append(" ".join(units))
+            pattern_weights.append(w)
+
+        corpus = [dialog_text] + pattern_texts
+        vectorizer = TfidfVectorizer()
+        tfidf = vectorizer.fit_transform(corpus)
+        dialog_vec = tfidf[0:1]
+        pattern_vecs = tfidf[1:]
+        sims = cosine_similarity(dialog_vec, pattern_vecs).flatten()
+
+        max_sim = float(sims.max()) if sims.size else 0.0
+        low = sim_low
+        high = sim_high
+        if max_sim > 0.0 and max_sim < low:
+            low = max_sim * 0.3
+            high = max_sim * 0.7
+        if high <= low:
+            high = low + 1e-6
+
+        for idx, pattern in enumerate(risk_patterns):
+            w = pattern_weights[idx]
+            sim = float(sims[idx]) if pattern_texts[idx] else 0.0
+            if sim <= low:
+                p_k = 0.0
+            elif sim >= high:
+                p_k = 1.0
+            else:
+                p_k = (sim - low) / (high - low)
+            numerator += w * p_k
+            denominator += w
+
+    end_time = time.time()
+    if start_time is not None:
+        print(f"DDRR计算时间: {end_time - start_time:.2f} 秒")
     return numerator / denominator if denominator > 0 else 0.0
 
 

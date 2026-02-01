@@ -163,7 +163,7 @@ BUSINESS_NEGOTIATION = ScenarioConfig(
         
         AgentConfig(
             role="乙方首席谈判代表",
-            agent_type="PRO",
+            agent_type="RE",
             scenario_duty="代表乙方公司，目标是尽可能达成合作，满足甲方。"
         ),
         AgentConfig(

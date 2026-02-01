@@ -3,14 +3,17 @@ import re
 import csv
 import json
 import logging
+import threading
+import time
 from openai import OpenAI
 from typing import Tuple
 
-# 确保不走代理，避免 502
-os.environ.pop("http_proxy", None)
-os.environ.pop("https_proxy", None)
-os.environ.pop("HTTP_PROXY", None)
-os.environ.pop("HTTPS_PROXY", None)
+# 确保不走代理，避免 httpx 走 SOCKS/HTTP 代理
+for _key in (
+    "http_proxy", "https_proxy", "HTTP_PROXY", "HTTPS_PROXY",
+    "all_proxy", "ALL_PROXY",
+):
+    os.environ.pop(_key, None)
 
 # logger: default to WARNING; enable DEBUG by setting MAPDA_LOG_LEVEL=DEBUG
 logger = logging.getLogger("mapda")
@@ -21,6 +24,22 @@ if not logger.handlers:
     logger.addHandler(_handler)
     level_name = os.environ.get("MAPDA_LOG_LEVEL", "WARNING").upper()
     logger.setLevel(getattr(logging, level_name, logging.WARNING))
+
+# Rate limiting (seconds between requests across threads)
+_min_interval = float(os.environ.get("MAPDA_MIN_REQUEST_INTERVAL", "0") or "0")
+_rate_lock = threading.Lock()
+_last_request_ts = 0.0
+
+def _throttle():
+    global _last_request_ts
+    if _min_interval <= 0:
+        return
+    with _rate_lock:
+        now = time.monotonic()
+        wait = _min_interval - (now - _last_request_ts)
+        if wait > 0:
+            time.sleep(wait)
+        _last_request_ts = time.monotonic()
 
 
 def load_api(api_name: str) -> Tuple[str, str]:
@@ -34,6 +53,7 @@ def send_data(data, api_pair):
     url, api_key = api_pair
     
     try:
+        _throttle()
         logger.debug(f"发送请求到: {url}")
         logger.debug(f"请求数据(隐藏messages长度): model={data.get('model')} messages_len={len(data.get('messages', []))}")
         
@@ -44,6 +64,11 @@ def send_data(data, api_pair):
         model = data.get("model", "")
         messages = data.get("messages", [])
         temperature = data.get("temperature", 0.6)
+        extra_body = {
+            "top_k": 20,
+            "chat_template_kwargs": {"enable_thinking": False},
+        }
+        max_tokens = int(os.environ.get("MAPDA_MAX_TOKENS", "1024") or "1024")
         
         logger.debug(f"使用模型: {model}")
         logger.debug(f"消息条数: {len(messages)}")
@@ -52,7 +77,9 @@ def send_data(data, api_pair):
         response = client.chat.completions.create(
             model=model,
             messages=messages,
-            temperature=temperature
+            temperature=temperature,
+            extra_body=extra_body,
+            max_tokens=max_tokens,
         )
         
         logger.debug("响应成功")
@@ -69,6 +96,12 @@ def send_data(data, api_pair):
 
 
 def init_data(model: str, role: str, content: str, temperature: float = 0.6) -> dict:
+    if role == "system":
+        max_tokens = os.environ.get("MAPDA_MAX_TOKENS", "1024")
+        content = (
+            f"{content}\n\n"
+            f"Please keep your reply within {max_tokens} tokens."
+        )
     if model=="o3-mini" or model=="o1-mini" or model=="gpt-4.1":
         data = {
             "model": model,
@@ -93,10 +126,13 @@ def add_data(ori_data, role: str, content: str):
     return ori_data
 
 
+
+
 def send_score_data(data, api_pair):
     url, api_key = api_pair
     
     try:
+        _throttle()
         # 创建OpenAI客户端
         client = OpenAI(base_url=url, api_key="EMPTY" if api_key == "None" else api_key, timeout=60)
         
@@ -104,12 +140,19 @@ def send_score_data(data, api_pair):
         model = data.get("model", "")
         messages = data.get("messages", [])
         temperature = data.get("temperature", 0.6)
+        extra_body = {
+            "top_k": 20,
+            "chat_template_kwargs": {"enable_thinking": False},
+        }
+        max_tokens = int(os.environ.get("MAPDA_MAX_TOKENS", "1024") or "1024")
         
         # 调用OpenAI API
         response = client.chat.completions.create(
             model=model,
             messages=messages,
-            temperature=temperature
+            temperature=temperature,
+            extra_body=extra_body,
+            max_tokens=max_tokens,
         )
         
         # 返回完整的响应对象转换为字典
@@ -150,5 +193,3 @@ def append_list_to_csv(file_path, data_list, sbj: str):
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(new_data_list)
     logger.debug("chain saved")
-
-

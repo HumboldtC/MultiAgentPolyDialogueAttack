@@ -3,6 +3,7 @@ from Scenario import SCENARIO_LIST
 from pathlib import Path
 from typing import List
 import polars as pl
+from tqdm import tqdm
 import json
 import re
 
@@ -15,7 +16,8 @@ class Group:
                  personality_flag: str,
                  model: str,
                  scenario_code: str,
-                 question_folder_path: str
+                 question_folder_path: str,
+                 max_rows_per_file: int = 0
                  #  MAS_flag:str,
                  ):
         self.api_pair = api_pair
@@ -27,6 +29,7 @@ class Group:
         self.message_list: List[dict] = []
         self.agents = []
         self.scenario_code = scenario_code
+        self.max_rows_per_file = max_rows_per_file
         if scenario_code != "NONE":
             try:
                 self.scenario = SCENARIO_LIST[scenario_code]
@@ -115,8 +118,12 @@ class Group:
                            "personality_flag": self.personality_flag,
                            "scenario": self.scenario_code}
             df = pl.read_csv(qfile,separator=";")
-            for row in df.iter_rows():
+            if self.max_rows_per_file and self.max_rows_per_file > 0:
+                df = df.head(self.max_rows_per_file)
+            for row in tqdm(df.iter_rows(), total=df.height, desc=f"{c1}/{c2}"):
                 questions = row[1:]
+                for agt in self.agents:
+                    agt.reset_conversation()
                 self.message_list = []
                 with open(saving_addr, "r", encoding='utf-8') as f:
                     lines = f.readlines()
@@ -137,6 +144,8 @@ class Group:
                         r_role_name = agt.role if agt.scenario else str(i)
                         self.message_list.append(
                             agt.send_message(r_role_name, "answer", r))
+                if any("API调用异常" in m.get("content", "") for m in self.message_list):
+                    continue
                 result = result_info.copy()
                 result.update(self.msglist_format_transfer(self.message_list))
                 result_line = json.dumps(result, ensure_ascii=False)
