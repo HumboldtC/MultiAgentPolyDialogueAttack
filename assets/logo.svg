@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d2ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3a7bd5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dogGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d2ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7b2ff7;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" fill="#0a0a1a" rx="40"/>
+
+  <!-- Shield shape -->
+  <path d="M200 30 L350 90 L350 220 Q350 320 200 380 Q50 320 50 220 L50 90 Z" 
+        fill="url(#shieldGrad)" 
+        stroke="url(#accentGrad)" 
+        stroke-width="3"
+        filter="url(#shadow)"/>
+
+  <!-- Inner shield highlight -->
+  <path d="M200 45 L335 100 L335 215 Q335 305 200 360 Q65 305 65 215 L65 100 Z" 
+        fill="none" 
+        stroke="url(#accentGrad)" 
+        stroke-width="1" 
+        opacity="0.3"/>
+
+  <!-- Doberman head - minimalist cold silhouette -->
+  <g filter="url(#glow)">
+    <!-- Main head silhouette -->
+    <path d="
+      M200 90
+      L180 100
+      L160 115
+      L145 135
+      L135 160
+      L130 190
+      L132 215
+      L140 240
+      L155 260
+      L170 275
+      L185 285
+      L195 290
+      L200 293
+      L205 290
+      L215 285
+      L230 275
+      L245 260
+      L260 240
+      L268 215
+      L270 190
+      L265 160
+      L255 135
+      L240 115
+      L220 100
+      Z
+    " fill="url(#dogGrad)" opacity="0.95"/>
+
+    <!-- Left ear - tall pointed -->
+    <path d="
+      M160 115
+      L150 75
+      L162 55
+      L178 70
+      L180 100
+      Z
+    " fill="url(#dogGrad)" opacity="0.95"/>
+
+    <!-- Right ear - tall pointed -->
+    <path d="
+      M240 115
+      L250 75
+      L238 55
+      L222 70
+      L220 100
+      Z
+    " fill="url(#dogGrad)" opacity="0.95"/>
+
+    <!-- Left eye - sharp cold angle -->
+    <path d="
+      M172 178
+      L182 172
+      L192 175
+      L188 180
+      L178 180
+      Z
+    " fill="#0a0a1a" opacity="0.9"/>
+    <circle cx="184" cy="176" r="3" fill="#00d2ff" opacity="0.95"/>
+
+    <!-- Right eye - sharp cold angle -->
+    <path d="
+      M228 178
+      L218 172
+      L208 175
+      L212 180
+      L222 180
+      Z
+    " fill="#0a0a1a" opacity="0.9"/>
+    <circle cx="216" cy="176" r="3" fill="#00d2ff" opacity="0.95"/>
+
+    <!-- Nose -->
+    <path d="
+      M194 282
+      L200 278
+      L206 282
+      L204 290
+      L200 294
+      L196 290
+      Z
+    " fill="#0a0a1a" opacity="0.95"/>
+
+    <!-- Snout center line -->
+    <line x1="200" y1="185" x2="200" y2="278" stroke="#0a0a1a" stroke-width="1" opacity="0.25"/>
+
+    <!-- Jaw left -->
+    <path d="M185 285 L195 290 L200 293" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.25"/>
+
+    <!-- Jaw right -->
+    <path d="M215 285 L205 290 L200 293" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.25"/>
+
+    <!-- Forehead subtle lines -->
+    <path d="M188 145 Q200 140 212 145" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.15"/>
+    <path d="M183 160 Q200 155 217 160" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.15"/>
+
+    <!-- Cheek bone left -->
+    <path d="M158 205 Q168 200 178 205" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.12"/>
+
+    <!-- Cheek bone right -->
+    <path d="M242 205 Q232 200 222 205" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.12
