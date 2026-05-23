@@ -142,4 +142,6 @@
     <path d="M158 205 Q168 200 178 205" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.12"/>
 
     <!-- Cheek bone right -->
-    <path d="M242 205 Q232 200 222 205" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.12
+    <path d="M242 205 Q232 200 222 205" fill="none" stroke="#0a0a1a" stroke-width="1" opacity="0.12"/>
+    </g>
+</svg>
