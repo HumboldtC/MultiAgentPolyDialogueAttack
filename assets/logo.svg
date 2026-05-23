@@ -24,8 +24,6 @@
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="400" height="400" fill="#0a0a1a" rx="40"/>
 
   <!-- Shield shape -->
   <path d="M200 30 L350 90 L350 220 Q350 320 200 380 Q50 320 50 220 L50 90 Z" 
